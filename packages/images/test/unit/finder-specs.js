@@ -86,7 +86,6 @@ describe('finding elements by image', function () {
       basicImgElVerify(imgElProto, f);
     });
     it('should find image elements happypath', async function () {
-      compareStub.returns([{rect, score}]);
       const els = await f.findByImage(template, {multiple: true});
       els.should.have.length(1);
       basicImgElVerify(els[0], f);
