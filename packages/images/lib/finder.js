@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import LRU from 'lru-cache';
 import { imageUtil, util } from 'appium-support';
 import { errors } from 'appium-base-driver';
