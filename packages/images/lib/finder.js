@@ -207,7 +207,7 @@ export default class ImageElementFinder {
 
     const elements = results.map(({rect, score, visualization}) => {
       log.info(`Image template matched: ${JSON.stringify(rect)}`);
-      return new ImageElement(b64Template, rect, score, visualization);
+      return new ImageElement(b64Template, rect, score, visualization, this);
     });
 
     // if we're just checking staleness, return straightaway so we don't add
