@@ -220,7 +220,7 @@ export default class ImageElementFinder {
     const registeredElements = elements.map((imgEl) => this.registerImageElement(imgEl));
 
     return multiple ? registeredElements : registeredElements[0];
-  };
+  }
 
   /**
    * Ensure that the image template sent in for a find is of a suitable size

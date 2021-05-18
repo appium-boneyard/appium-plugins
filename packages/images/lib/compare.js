@@ -75,11 +75,11 @@ async function compareImages (mode, firstImage, secondImage, options = {}) {
  *
 **/
 function convertVisualizationToBase64 (element) {
- if (_.isString(element.visualization)) {
-   element.visualization = element.visualization.toString('base64');
- }
+  if (_.isString(element.visualization)) {
+    element.visualization = element.visualization.toString('base64');
+  }
 
- return element;
+  return element;
 }
 
 export { compareImages, DEFAULT_MATCH_THRESHOLD, MATCH_TEMPLATE_MODE, MATCH_FEATURES_MODE,
