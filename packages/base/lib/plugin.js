@@ -13,9 +13,12 @@ export default class BasePlugin {
   // }
   static newMethodMap = {};
 
-  constructor (pluginName) {
+  constructor (pluginName, pluginArgs = {}) {
     this.name = pluginName;
     this.logger = logger.getLogger(`Plugin [${pluginName}]`);
+
+    //allow for cli args to be used by plugins
+    this.pluginArgs = pluginArgs;
   }
 
 
