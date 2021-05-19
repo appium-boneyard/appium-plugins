@@ -1,5 +1,4 @@
 import { logger } from 'appium-support';
-import {isEmpty} from "lodash"
 
 
 export default class BasePlugin {
