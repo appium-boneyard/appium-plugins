@@ -1,4 +1,6 @@
 import { logger } from 'appium-support';
+import {isEmpty} from "lodash"
+
 
 export default class BasePlugin {
 
@@ -13,12 +15,12 @@ export default class BasePlugin {
   // }
   static newMethodMap = {};
 
-  constructor (pluginName, pluginArgs = {}) {
+  constructor (pluginName, opts = {}) {
     this.name = pluginName;
     this.logger = logger.getLogger(`Plugin [${pluginName}]`);
 
-    //allow for cli args to be used by plugins
-    this.pluginArgs = pluginArgs;
+    // allow for args to be used by plugins
+    this.opts = opts;
   }
 
 

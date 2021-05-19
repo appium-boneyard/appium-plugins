@@ -5,13 +5,13 @@ import B from 'bluebird';
 
 
 export default class FakePlugin extends BasePlugin {
-  constructor (pluginName, pluginArgs = {}) {
-    super(pluginName, pluginArgs);
+  constructor (pluginName, opts = {}) {
+    super(pluginName, opts);
   }
 
   async getFakePluginArgs () {
     await B.delay(1);
-    return this.pluginArgs;
+    return this.opts.pluginArgs;
   }
 
   static newMethodMap = {
