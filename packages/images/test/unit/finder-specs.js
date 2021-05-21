@@ -51,7 +51,7 @@ describe('finding elements by image', function () {
     const size = {width: 100, height: 200};
     const screenshot = 'iVBORfoo';
     const template = 'iVBORbar';
-    let compareStub = sinon.stub(compareModule, 'compareImages').returns({rect, score});
+    let compareStub;
     let d = new PluginDriver();
     let f = new ImageElementFinder(d);
 
@@ -72,12 +72,13 @@ describe('finding elements by image', function () {
     }
 
     beforeEach(function () {
+      compareStub = sinon.stub(compareModule, 'compareImages').returns({rect, score});
       d = new PluginDriver();
       f = new ImageElementFinder(d);
       basicStub(d, f);
     });
 
-    after(function () {
+    afterEach(function () {
       compareStub.restore();
     });
 
@@ -86,6 +87,8 @@ describe('finding elements by image', function () {
       basicImgElVerify(imgElProto, f);
     });
     it('should find image elements happypath', async function () {
+      compareStub.restore();
+      compareStub = sinon.stub(compareModule, 'compareImages').returns([{rect, score}]);
       const els = await f.findByImage(template, {multiple: true});
       els.should.have.length(1);
       basicImgElVerify(els[0], f);

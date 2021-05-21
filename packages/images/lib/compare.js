@@ -32,7 +32,7 @@ const DEFAULT_MATCH_THRESHOLD = 0.4;
 async function compareImages (mode, firstImage, secondImage, options = {}) {
   const img1 = Buffer.from(firstImage, 'base64');
   const img2 = Buffer.from(secondImage, 'base64');
-  let result = {};
+  let result = null;
   switch (_.toLower(mode)) {
     case MATCH_FEATURES_MODE.toLowerCase():
       result = await imageUtil.getImagesMatches(img1, img2, options);
@@ -43,15 +43,30 @@ async function compareImages (mode, firstImage, secondImage, options = {}) {
     case MATCH_TEMPLATE_MODE.toLowerCase():
       // firstImage/img1 is the full image and secondImage/img2 is the partial one
       result = await imageUtil.getImageOccurrence(img1, img2, options);
+      if (options.multiple) {
+        return result.multiple.map(convertVisualizationToBase64);
+      }
       break;
     default:
       throw new errors.InvalidArgumentError(`'${mode}' images comparison mode is unknown. ` +
         `Only ${JSON.stringify([MATCH_FEATURES_MODE, GET_SIMILARITY_MODE, MATCH_TEMPLATE_MODE])} modes are supported.`);
   }
-  if (!_.isEmpty(result.visualization)) {
-    result.visualization = result.visualization.toString('base64');
+  return convertVisualizationToBase64(result);
+}
+
+/**
+ * base64 encodes the visualization part of the result
+ * (if necessary)
+ *
+ * @param {OccurrenceResult} element - occurrence result
+ *
+**/
+function convertVisualizationToBase64 (element) {
+  if (!_.isEmpty(element.visualization)) {
+    element.visualization = element.visualization.toString('base64');
   }
-  return result;
+
+  return element;
 }
 
 export { compareImages, DEFAULT_MATCH_THRESHOLD, MATCH_TEMPLATE_MODE, MATCH_FEATURES_MODE,
