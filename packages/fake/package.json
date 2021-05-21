@@ -4,7 +4,7 @@
   "tags": [
     "appium"
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Appium <maintainers@appium.io>",
   "license": "Apache-2.0",
   "repository": {
@@ -20,7 +20,11 @@
   },
   "appium": {
     "pluginName": "fake",
-    "mainClass": "FakePlugin"
+    "mainClass": "FakePlugin",
+    "scripts": {
+      "fake-error": "./build/lib/scripts/fake-error.js",
+      "fake-success": "./build/lib/scripts/fake-success.js"
+    }
   },
   "main": "./build/index.js",
   "directories": {
