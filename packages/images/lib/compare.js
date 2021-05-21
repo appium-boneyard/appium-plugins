@@ -58,7 +58,7 @@ async function compareImages (mode, firstImage, secondImage, options = {}) {
  * base64 encodes the visualization part of the result
  * (if necessary)
  *
- * @param {OccurenceResult} element - occurrence result
+ * @param {OccurrenceResult} element - occurrence result
  *
 **/
 function convertVisualizationToBase64 (element) {
