@@ -62,7 +62,7 @@ async function compareImages (mode, firstImage, secondImage, options = {}) {
  *
 **/
 function convertVisualizationToBase64 (element) {
-  if (!_.isEmpty(element.visualization) && !_.isString(element.visualization)) {
+  if (!_.isEmpty(element.visualization)) {
     element.visualization = element.visualization.toString('base64');
   }
 
