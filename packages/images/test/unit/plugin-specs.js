@@ -118,9 +118,7 @@ describe('ImageElementPlugin#handle', function () {
       })};
       const el = await p.findElement(next, driver, IMAGE_STRATEGY, TEST_IMG_2_PART_B64);
       elId = el[W3C_ELEMENT_KEY];
-      // FIXME: temporary
-      const result = await p.handle(next, driver, 'getAttribute', 'visual', elId);
-      result.toString().should.eql('iVBOR');
+      await p.handle(next, driver, 'getAttribute', 'visual', elId).should.eventually.eql('iVBOR');
     });
     it('should not allow any other attrs', async function () {
       await p.handle(next, driver, 'getAttribute', 'rando', elId).should.eventually.be
