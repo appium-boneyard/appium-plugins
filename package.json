@@ -22,10 +22,10 @@
     "webdriverio": "^6.12.0"
   },
   "scripts": {
-    "clean": "run-p clean:* && npm install && npm run bootstrap && npm run build",
+    "clean": "run-s clean:* && npm install && npm run bootstrap && npm run build",
     "clean:appiumhome": "rimraf packages/*/local_appium_home",
-    "clean:modules": "rimraf node_modules && rimraf packages/*/node_modules",
     "clean:pkglock": "rimraf package-lock.json && rimraf packages/*/package-lock.json",
+    "clean:modules": "rimraf packages/*/node_modules && rimraf node_modules",
     "build": "lerna run copyfiles && node ./scripts/build.js",
     "watch": "lerna run copyfiles && node ./scripts/build.js --watch",
     "bootstrap": "lerna bootstrap --no-ci",
