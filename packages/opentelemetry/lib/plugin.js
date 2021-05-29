@@ -17,9 +17,6 @@ export default class OpentelemetryPlugin extends BasePlugin {
   };
 
   static setOpentelemetryConfig2 (_req, res) {
-    //console.log("request is ", _req);
-    //console.log("respones is ", res);
-    console.log("call aaya");
     res.send(JSON.stringify({fake: 'fakeResponse'}));
   }
 
@@ -27,7 +24,7 @@ export default class OpentelemetryPlugin extends BasePlugin {
     expressApp.all('/opentelemetry/config', OpentelemetryPlugin.setOpentelemetryConfig2);
   }
 
-  async getStatus (_next, _driver) {
+  getStatus (_next, _driver) {
     return `${JSON.stringify('{"status" : "OK"}')}`;
   }
 }

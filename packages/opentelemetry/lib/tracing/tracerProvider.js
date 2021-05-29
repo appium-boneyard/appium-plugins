@@ -9,24 +9,24 @@ const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
 //Delegate
 class TracerProvider {
-  async constructor () {
+  constructor () {
     this.init();
   }
 
-init() {
+  init () {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
     this.provider = new NodeTracerProvider();
     this.provider.register();
-    
+
     const consoleExporter = new build_exporter(available_exporters_with_default_config.CONSOLE);
     const spanProcessor = getBatchSpanProcessor(consoleExporter);
     this.addSpanProcessor(spanProcessor);
-  
+
     registerInstrumentations({
       instrumentation: [new HttpInstrumentation({enabled: true}), new ExpressInstrumentation({enabled: true})],
       tracerProvider: this.provider
     });
-}
+  }
 
   static getNoopTracerProviderInstance () {
     return new NoopTracerProvider();
