@@ -22,10 +22,13 @@
   "dependencies": {
     "@opentelemetry/api": "^0.18.x",
     "@opentelemetry/core": "^0.18.x",
+    "@opentelemetry/exporter-jaeger": "^0.19.0",
+    "@opentelemetry/exporter-prometheus": "^0.19.0",
+    "@opentelemetry/exporter-zipkin": "^0.19.0",
     "@opentelemetry/instrumentation-express": "^0.16.0",
+    "@opentelemetry/instrumentation-grpc": "^0.19.0",
     "@opentelemetry/instrumentation-http": "^0.19.0",
-    "@opentelemetry/node": "^0.18.x",
-    "bluebird": "^3.7.2"
+    "@opentelemetry/node": "^0.18.x"
   },
   "devDependencies": {
     "@opentelemetry/api": "^0.18.x",

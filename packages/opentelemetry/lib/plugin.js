@@ -2,7 +2,8 @@
 /* eslint-disable no-case-declarations */
 
 import BasePlugin from '@appium/base-plugin';
-import B from 'bluebird';
+const { tracerProviderInstance } = require('./tracing/tracerProvider');
+
 
 export default class OpentelemetryPlugin extends BasePlugin {
   constructor (pluginName, opts = {}) {
@@ -10,22 +11,23 @@ export default class OpentelemetryPlugin extends BasePlugin {
   }
 
   static newMethodMap = {
-    '/opentelemetry/config': {
-      POST: {command: 'setOpentelemetryConfig', payloadParams: {required: ['data']}}
-    },
     '/opentelemetry/status': {
       GET: {command: 'getStatus'}
     },
   };
 
-  async getStatus (_next, _driver) {
-    await B.delay(10);
-    return `${JSON.stringify('{"status" : "OK"}')}`;
+  static setOpentelemetryConfig2 (_req, res) {
+    //console.log("request is ", _req);
+    //console.log("respones is ", res);
+    console.log("call aaya");
+    res.send(JSON.stringify({fake: 'fakeResponse'}));
   }
 
-  async setOpentelemetryConfig (_next, _driver, ...args) {
-    await B.delay(10);
-    // eslint-disable-next-line no-console
-    console.log(args);
+  static async updateServer (expressApp/*, httpServer*/) { // eslint-disable-line require-await
+    expressApp.all('/opentelemetry/config', OpentelemetryPlugin.setOpentelemetryConfig2);
+  }
+
+  async getStatus (_next, _driver) {
+    return `${JSON.stringify('{"status" : "OK"}')}`;
   }
 }

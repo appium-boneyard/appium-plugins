@@ -1,23 +1,32 @@
-const { ConsoleSpanExporter, BatchSpanProcessor } = require('@opentelemetry/tracing');
+const { getBatchSpanProcessor } = require('./spanProcessor');
+const { build_exporter, available_exporters_with_default_config } = require('./exporter');
 const { NodeTracerProvider } = require('@opentelemetry/node');
-const api = require('@opentelemetry/api');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { NoopTracerProvider } = require('@opentelemetry/api');
+const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
 //Delegate
 class TracerProvider {
-  constructor () {
-    this.provider = new NodeTracerProvider();
-    this.initializeTracer();
-    api.trace.setGlobalTracerProvider(this.provider);
-
-    //register core instrumentation tracer
-    this.registerInstrumentation(new HttpInstrumentation());
-    //register contrib instrumentation tracer
-    this.registerInstrumentation(new ExpressInstrumentation());
+  async constructor () {
+    this.init();
   }
+
+init() {
+    diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
+    this.provider = new NodeTracerProvider();
+    this.provider.register();
+    
+    const consoleExporter = new build_exporter(available_exporters_with_default_config.CONSOLE);
+    const spanProcessor = getBatchSpanProcessor(consoleExporter);
+    this.addSpanProcessor(spanProcessor);
+  
+    registerInstrumentations({
+      instrumentation: [new HttpInstrumentation({enabled: true}), new ExpressInstrumentation({enabled: true})],
+      tracerProvider: this.provider
+    });
+}
 
   static getNoopTracerProviderInstance () {
     return new NoopTracerProvider();
@@ -39,11 +48,6 @@ class TracerProvider {
   }
 
   initializeTracer () {
-    if (this.provider.getActiveSpanProcessor() === undefined) {
-      const consoleExporter = new ConsoleSpanExporter();
-      const spanProcessor = new BatchSpanProcessor(consoleExporter);
-      this.addSpanProcessor(spanProcessor);
-    }
     this.provider.register();
   }
 }
