@@ -2,34 +2,45 @@ const { getBatchSpanProcessor } = require('./spanProcessor');
 const { build_exporter, available_exporters_with_default_config } = require('./exporter');
 const { NodeTracerProvider } = require('@opentelemetry/node');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
-const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-const { NoopTracerProvider } = require('@opentelemetry/api');
+const { ServerInstrumentation } = require('./serverInstrumenation');
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
 //Delegate
 class TracerProvider {
   constructor () {
+    this.provider = new NodeTracerProvider();
     this.init();
   }
 
   init () {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
-    this.provider = new NodeTracerProvider();
     this.provider.register();
 
-    const consoleExporter = new build_exporter(available_exporters_with_default_config.CONSOLE);
+    const consoleExporter = build_exporter(available_exporters_with_default_config.CONSOLE);
     const spanProcessor = getBatchSpanProcessor(consoleExporter);
     this.addSpanProcessor(spanProcessor);
 
+    this._serverInstrumentation = new ServerInstrumentation();
     registerInstrumentations({
-      instrumentation: [new HttpInstrumentation({enabled: true}), new ExpressInstrumentation({enabled: true})],
+      instrumentation: this._serverInstrumentation.getInstrumentations(),
       tracerProvider: this.provider
     });
+    this._active = true;
+    this.currentConfig = {
+      active: this._active,
+      exporters: [available_exporters_with_default_config.CONSOLE]
+    };
   }
 
-  static getNoopTracerProviderInstance () {
-    return new NoopTracerProvider();
+  getCurrentConfig () {
+    return this.currentConfig;
+  }
+
+  generateSpanProcessorForExporter (exporter) {
+    const exporterObject = build_exporter(exporter.exporter_type, exporter.config);
+    const spanProcessor = getBatchSpanProcessor(exporterObject);
+    tracerProviderInstance.addSpanProcessor(spanProcessor);
+    this.currentConfig.exporters.push(exporter.exporter_type);
   }
 
   addSpanProcessor (spanProcessor) {
@@ -44,7 +55,12 @@ class TracerProvider {
   }
 
   shutdown () {
+    this._active = false;
     this.provider.shutdown();
+  }
+
+  isAlive () {
+    return this._active;
   }
 
   initializeTracer () {
