@@ -1,5 +1,8 @@
-const api = require('@opentelemetry/api');
-const { SpanStatusCode } = require('@opentelemetry/api');
+/* eslint-disable no-unused-vars */
+
+import { TraceAPI as api, SpanStatusCode, SpanOptions } from '@opentelemetry/api';
+
+import { Span } from '@opentelemetry/tracing';
 
 class Tracer {
 
@@ -9,18 +12,37 @@ class Tracer {
     this._tracer = api.trace.getTracer(name, version);
   }
 
+  /**
+ * creates a span object with optional parent span and optional span options
+ *
+ *
+ * @param { string } name  [name of the span]
+ * @param { Span } parentSpan [(Optional) parentSpan to get context from]
+ * @param { SpanOptions } spanOptions [(Optional) span options]
+ * @return { Span }
+ */
   createSpanObject (name, parentSpan = null, spanOptions = null) {
     //TODO - verify setting context from parentSpan
     const context = parentSpan ? api.setSpan(api.context.active(), parentSpan) : null;
-    const span = this._tracer.startSpan(name, spanOptions, context);
-    return span;
+    return this._tracer.startSpan(name, spanOptions, context);
   }
 
+
+  /**
+ * monkeypathces argument async function to instrument it via a span object
+ *
+ *
+ * @param { string } name  [name of the span]
+ * @param { Function } fn [original function to monkeypatch]
+ * @param { Span } parentSpan [(Optional) parentSpan to get context from]
+ * @param { SpanOptions } spanOptions [(Optional) span options]
+ * @return { Function }
+ */
   instrumentAsyncMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = async (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
-        let ret = await fn.call(...args);
+        const ret = await fn.call(...args);
         span.end();
         return ret;
       } catch (error) {
@@ -29,16 +51,28 @@ class Tracer {
           message: error.message
         });
         throw error;
+      } finally {
+        span.end();
       }
     };
     return spannerFunction;
   }
 
+  /**
+ * monkeypathces argument function to instrument it via a span object
+ *
+ *
+ * @param { string } name  [name of the span]
+ * @param { Function } fn [original function to monkeypatch]
+ * @param { Span } parentSpan [(Optional) parentSpan to get context from]
+ * @param { SpanOptions } spanOptions [(Optional) span options]
+ * @return { Function }
+ */
   instrumentMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
-        let ret = fn.call(...args);
+        const ret = fn.call(...args);
         span.end();
         return ret;
       } catch (error) {
@@ -47,12 +81,14 @@ class Tracer {
           message: error.message
         });
         throw error;
+      } finally {
+        span.end();
       }
     };
     return spannerFunction;
   }
 
-  getRawTracerInstance () {
+  get tracerInstance () {
     return this._tracer;
   }
 }

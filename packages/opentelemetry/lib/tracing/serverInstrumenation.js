@@ -1,5 +1,7 @@
-const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
-const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
+/* eslint-disable no-unused-vars */
+
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 
 class ServerInstrumentation {
   constructor () {
@@ -12,11 +14,12 @@ class ServerInstrumentation {
     };
   }
 
+
   updateCurrentConfig () {
     this._httpInstrumentation.setConfig(this._httpCurrentConfig);
   }
 
-  getInstrumentations () {
+  get instrumentations () {
     return [this._httpInstrumentation, this._expressInstrumentation];
   }
 
@@ -24,7 +27,7 @@ class ServerInstrumentation {
  * Optionally add a ignore string or a regex to avoid instrumenting that incoming path which matches the string or regex
  *
  *
- * @param { path } string | RegExp  - the incoming path to be ignored
+ * @param { string | RegExp } path  [the incoming path to be ignored]
  */
   addIncomingIgnoreMatchers (path) {
     this._httpCurrentConfig.ignoreIncomingPaths.append(path);
@@ -35,7 +38,7 @@ class ServerInstrumentation {
   ** Optionally add a ignore string or a regex to avoid instrumenting that outgoing url which matches the string or regex
   *
   *
-  * @param { url } string | RegExp  - the outgoing url (string or regex) to be ignored
+  * @param { string | RegExp } url  [the outgoing url (string or regex) to be ignored]
   */
 
   addOutgoingUrlIgnoreMatchers (url) {
@@ -47,7 +50,7 @@ class ServerInstrumentation {
    * Optionally add a servername to add as an attribute to the span
    *
    *
-   * @param { name } string
+   * @param { string } name
    */
   updateServerName (name) {
     this._httpCurrentConfig.serverName = name;
@@ -58,7 +61,7 @@ class ServerInstrumentation {
    * Optionally add a request hook to intercept any requests and update the attributes
    *
    *
-   * @param { hook } function
+   * @param { Function } hook
    */
   addRequestHook (hook) {
     this._httpCurrentConfig.requestHook = hook;
@@ -70,7 +73,7 @@ class ServerInstrumentation {
    * Optionally add a response hook to intercept any requests and update the attributes
    *
    *
-   * @param { hook } function
+   * @param { Function } hook
    */
   addResponseHook (hook) {
     this._httpCurrentConfig.responseHook = hook;

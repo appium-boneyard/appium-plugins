@@ -24,7 +24,7 @@ export default class FakePlugin extends BasePlugin {
     },
   };
 
-  static fakeRoute (_req, res) {
+  static fakeRoute (req, res) {
     res.send(JSON.stringify({fake: 'fakeResponse'}));
   }
 
@@ -32,12 +32,12 @@ export default class FakePlugin extends BasePlugin {
     expressApp.all('/fake', FakePlugin.fakeRoute);
   }
 
-  async getPageSource (_next, _driver, ...args) {
+  async getPageSource (next, driver, ...args) {
     await B.delay(10);
     return `<Fake>${JSON.stringify(args)}</Fake>`;
   }
 
-  async findElement (next, _driver, ...args) {
+  async findElement (next, driver, ...args) {
     this.logger.info(`Before findElement is run with args ${JSON.stringify(args)}`);
     const originalRes = await next();
     this.logger.info(`After findElement is run`);
@@ -45,12 +45,12 @@ export default class FakePlugin extends BasePlugin {
     return originalRes;
   }
 
-  async getFakeSessionData (_next, driver) {
+  async getFakeSessionData (next, driver) {
     await B.delay(1);
     return driver.fakeSessionData || null;
   }
 
-  async setFakeSessionData (_next, driver, ...args) {
+  async setFakeSessionData (next, driver, ...args) {
     await B.delay(1);
     driver.fakeSessionData = args[0];
     return null;

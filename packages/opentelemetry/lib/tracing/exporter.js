@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
+
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
-import { ConsoleSpanExporter } from '@opentelemetry/tracing';
+import { ConsoleSpanExporter, SpanExporter } from '@opentelemetry/tracing';
+
 
 const DEFAULT_SERVICE_NAME = 'appium';
 
@@ -12,14 +15,19 @@ const AVAILABLE_EXPORTERS = {
   CONSOLE: 'console'
 };
 
+/**
+   * factory to create exporter instance for a given exporter type and optional config
+   * @param {string} exporterType
+   * @param {Object} config
+   * @return {SpanExporter}
+   * @throws Will throw an error if the exporter_type is invalid or null
+   */
 function buildExporter (exporterType, config = null) {
   switch (exporterType) {
     case AVAILABLE_EXPORTERS.JAGGER:
-      config = config || { serviceName: DEFAULT_SERVICE_NAME };
-      return new JaegerExporter(config);
+      return new JaegerExporter(config || { serviceName: DEFAULT_SERVICE_NAME });
     case AVAILABLE_EXPORTERS.ZIPKIN:
-      config = config || { serviceName: DEFAULT_SERVICE_NAME };
-      return new ZipkinExporter(config);
+      return new ZipkinExporter(config || { serviceName: DEFAULT_SERVICE_NAME });
     case AVAILABLE_EXPORTERS.PROMETHEUS:
       return new PrometheusExporter(config);
     case AVAILABLE_EXPORTERS.CONSOLE:

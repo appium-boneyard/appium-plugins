@@ -1,8 +1,8 @@
-const { SimpleSpanProcessor, BatchSpanProcessor } = require('@opentelemetry/tracing');
+import { SimpleSpanProcessor, BatchSpanProcessor } from '@opentelemetry/tracing';
 
-const getSimpleSpanProcessor = function (spanExporter) {
+function getSimpleSpanProcessor (spanExporter) {
   return new SimpleSpanProcessor(spanExporter);
-};
+}
 
 const defaultBatchSpanProcessorConfig = {
   maxExportBatchSize: 100,
@@ -18,8 +18,8 @@ const defaultBatchSpanProcessorConfig = {
 };
 
 //optimized to batch spans and send it together
-const getBatchSpanProcessor = function (spanExporter, options = defaultBatchSpanProcessorConfig) {
+function getBatchSpanProcessor (spanExporter, options = defaultBatchSpanProcessorConfig) {
   return new BatchSpanProcessor(spanExporter, options);
-};
+}
 
 export { getSimpleSpanProcessor, getBatchSpanProcessor };
