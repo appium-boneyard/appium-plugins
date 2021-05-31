@@ -2,7 +2,14 @@
 /* eslint-disable no-case-declarations */
 
 import BasePlugin from '@appium/base-plugin';
-const { tracerProviderInstance } = require('./tracing/tracerProvider');
+import { tracerProviderInstance } from './tracing/tracerProvider';
+
+const constants = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+  SUCCESS: 'success',
+  FAILURE: 'failure'
+};
 
 export default class OpentelemetryPlugin extends BasePlugin {
   constructor (pluginName, opts = {}) {
@@ -20,19 +27,18 @@ export default class OpentelemetryPlugin extends BasePlugin {
   }
 
   static setOpentelemetryConfig (_req, res) {
+    const opentelemetryBlob = _req.body;
     try {
-      const opentelemetryBlob = _req.body;
       const exporterBlob = opentelemetryBlob.exporter;
       tracerProviderInstance.generateSpanProcessorForExporter(exporterBlob);
-      res.send(JSON.stringify({status: 'success'}));
+      res.send(JSON.stringify({status: constants.SUCCESS}));
     } catch (error) {
-      res.send(JSON.stringify({ status: 'failure', message: error.message }));
+      res.send(JSON.stringify({ status: constants.FAILURE, message: error.message }));
     }
   }
 
   static getStatus (_req, res) {
-    const message = tracerProviderInstance.isAlive() ? 'active' : 'inactive';
-    const returnValue = {status: message};
-    res.send(JSON.stringify(returnValue));
+    const message = tracerProviderInstance.isAlive() ? constants.ACTIVE : constants.INACTIVE;
+    res.send(JSON.stringify({status: message}));
   }
 }

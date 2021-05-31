@@ -1,5 +1,5 @@
 const { getBatchSpanProcessor } = require('./spanProcessor');
-const { build_exporter, available_exporters_with_default_config } = require('./exporter');
+const { buildExporter, AVAILABLE_EXPORTERS } = require('./exporter');
 const { NodeTracerProvider } = require('@opentelemetry/node');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { ServerInstrumentation } = require('./serverInstrumenation');
@@ -16,7 +16,7 @@ class TracerProvider {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
     this.provider.register();
 
-    const consoleExporter = build_exporter(available_exporters_with_default_config.CONSOLE);
+    const consoleExporter = buildExporter(AVAILABLE_EXPORTERS.CONSOLE);
     const spanProcessor = getBatchSpanProcessor(consoleExporter);
     this.addSpanProcessor(spanProcessor);
 
@@ -28,7 +28,7 @@ class TracerProvider {
     this._active = true;
     this.currentConfig = {
       active: this._active,
-      exporters: [available_exporters_with_default_config.CONSOLE]
+      exporters: [AVAILABLE_EXPORTERS.CONSOLE]
     };
   }
 
@@ -37,7 +37,7 @@ class TracerProvider {
   }
 
   generateSpanProcessorForExporter (exporter) {
-    const exporterObject = build_exporter(exporter.exporter_type, exporter.config);
+    const exporterObject = buildExporter(exporter.exporter_type, exporter.config);
     const spanProcessor = getBatchSpanProcessor(exporterObject);
     tracerProviderInstance.addSpanProcessor(spanProcessor);
     this.currentConfig.exporters.push(exporter.exporter_type);

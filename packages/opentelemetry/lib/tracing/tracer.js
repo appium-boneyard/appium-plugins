@@ -9,18 +9,18 @@ class Tracer {
     this._tracer = api.trace.getTracer(name, version);
   }
 
-  createSpanObject (name, parentSpan = undefined, spanOptions = undefined) {
+  createSpanObject (name, parentSpan = null, spanOptions = null) {
     //TODO - verify setting context from parentSpan
-    const context = parentSpan ? api.setSpan(api.context.active(), parentSpan) : undefined;
+    const context = parentSpan ? api.setSpan(api.context.active(), parentSpan) : null;
     const span = this._tracer.startSpan(name, spanOptions, context);
     return span;
   }
 
-  instrumentAsyncMethod (name, fn, parentSpan = undefined, spanOptions = undefined) {
+  instrumentAsyncMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = async (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
-        let ret = await fn.call(args);
+        let ret = await fn.call(...args);
         span.end();
         return ret;
       } catch (error) {
@@ -34,11 +34,11 @@ class Tracer {
     return spannerFunction;
   }
 
-  instrumentMethod (name, fn, parentSpan = undefined, spanOptions = undefined) {
+  instrumentMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
-        let ret = fn.call(args);
+        let ret = fn.call(...args);
         span.end();
         return ret;
       } catch (error) {

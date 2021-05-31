@@ -1,31 +1,31 @@
-const jagger = require('@opentelemetry/exporter-jaeger');
-const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin');
-const { PrometheusExporter } = require('@opentelemetry/exporter-prometheus');
-const { ConsoleSpanExporter } = require('@opentelemetry/tracing');
+import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
+import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
+import { ConsoleSpanExporter } from '@opentelemetry/tracing';
 
 const DEFAULT_SERVICE_NAME = 'appium';
 
-const available_exporters_with_default_config = {
+const AVAILABLE_EXPORTERS = {
   JAGGER: 'jagger',
   ZIPKIN: 'zipkin',
   PROMETHEUS: 'prometheus',
   CONSOLE: 'console'
 };
 
-const build_exporter = function (exporter_type, config = undefined) {
-  switch (exporter_type) {
-    case available_exporters_with_default_config.JAGGER:
+function buildExporter (exporterType, config = null) {
+  switch (exporterType) {
+    case AVAILABLE_EXPORTERS.JAGGER:
       config = config || { serviceName: DEFAULT_SERVICE_NAME };
-      return new jagger.JaegerExporter(config);
-    case available_exporters_with_default_config.ZIPKIN:
+      return new JaegerExporter(config);
+    case AVAILABLE_EXPORTERS.ZIPKIN:
       config = config || { serviceName: DEFAULT_SERVICE_NAME };
       return new ZipkinExporter(config);
-    case available_exporters_with_default_config.PROMETHEUS:
+    case AVAILABLE_EXPORTERS.PROMETHEUS:
       return new PrometheusExporter(config);
-    case available_exporters_with_default_config.CONSOLE:
+    case AVAILABLE_EXPORTERS.CONSOLE:
       return new ConsoleSpanExporter();
   }
-  throw new Error(`Unsupported exporter type - ${exporter_type}`);
-};
+  throw new Error(`Unsupported exporter type - ${exporterType}, Supported types ${Object.keys(AVAILABLE_EXPORTERS)}`);
+}
 
-export { build_exporter, available_exporters_with_default_config };
+export { buildExporter, AVAILABLE_EXPORTERS };

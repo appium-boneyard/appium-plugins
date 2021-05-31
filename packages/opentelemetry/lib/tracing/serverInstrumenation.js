@@ -5,15 +5,10 @@ class ServerInstrumentation {
   constructor () {
     this._httpInstrumentation = new HttpInstrumentation();
     this._expressInstrumentation = new ExpressInstrumentation();
-    this._ignoreIncomingPaths = [],
-    this._ignoreOutgoingUrls = [],
     this._httpCurrentConfig = {
-      ignoreIncomingPaths: this._ignoreIncomingPaths,
-      ignoreOutgoingUrls: this._ignoreOutgoingUrls,
-      applyCustomAttributesOnSpan: {},
-      requestHook: undefined,
-      responseHook: undefined,
-      serverName: undefined
+      ignoreIncomingPaths: [],
+      ignoreOutgoingUrls: [],
+      applyCustomAttributesOnSpan: {}
     };
   }
 
@@ -32,7 +27,7 @@ class ServerInstrumentation {
  * @param { path } string | RegExp  - the incoming path to be ignored
  */
   addIncomingIgnoreMatchers (path) {
-    this._ignoreIncomingPaths.append(path);
+    this._httpCurrentConfig.ignoreIncomingPaths.append(path);
     this.updateCurrentConfig();
   }
 
@@ -44,7 +39,7 @@ class ServerInstrumentation {
   */
 
   addOutgoingUrlIgnoreMatchers (url) {
-    this._ignoreOutgoingUrls.append(url);
+    this._httpCurrentConfig.ignoreOutgoingUrls.append(url);
     this.updateCurrentConfig();
   }
 

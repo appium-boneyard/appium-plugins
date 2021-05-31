@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Opentelemtry integration for appium",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:unit": "mocha ./build/test/unit/*-specs.js"
   },
   "appium": {
     "pluginName": "opentelemetry",
