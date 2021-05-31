@@ -12,6 +12,7 @@ import { SpanProcessor, } from '@opentelemetry/tracing';
 class TracerProvider {
   constructor () {
     this.provider = new NodeTracerProvider();
+    this.exporters = {};
     this.init();
   }
 
@@ -22,6 +23,7 @@ class TracerProvider {
     const consoleExporter = buildExporter(AVAILABLE_EXPORTERS.CONSOLE);
     const spanProcessor = getBatchSpanProcessor(consoleExporter);
     this.addSpanProcessor(spanProcessor);
+    this.exporters[AVAILABLE_EXPORTERS.CONSOLE] = consoleExporter;
 
     this._serverInstrumentation = new ServerInstrumentation();
     registerInstrumentations({
@@ -64,6 +66,7 @@ class TracerProvider {
     const spanProcessor = getBatchSpanProcessor(exporterObject);
     tracerProviderInstance.addSpanProcessor(spanProcessor);
     this.addExporterToConfig(exporter);
+    this.exporters[exporter.exporter_type] = exporterObject;
   }
 
   /**
@@ -84,6 +87,17 @@ class TracerProvider {
       instrumentation: [instrumentationInstance],
       provider: this.provider
     });
+  }
+
+  /**
+   * disables existing exporter if active
+   * @param {string} exporter_type [exporter types from AVAILABLE_EXPORTERS]
+   */
+  disableExporter (exporter_type) {
+    if (this.exporters[exporter_type]) {
+      this.exporters[exporter_type].shutdown();
+      delete this.exporters[exporter_type];
+    }
   }
 
   /**
