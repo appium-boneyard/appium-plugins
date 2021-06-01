@@ -21,7 +21,7 @@ class TracerProvider {
    * @typedef {Object} exporter
    * @property {string} exporter_type - exporterType of the exporter
    * @property {ExporterConfig} config - config for that specific exporter_type
-   */
+    */
 
   init () {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
@@ -54,7 +54,7 @@ class TracerProvider {
     return JSON.parse(JSON.stringify(this.currentConfig));
   }
 
-  /**
+  /** 
    * adds exporter type and config to currentConfig
    * @param {exporter} exporter  exporter object with exporter_type and config
    */
@@ -65,7 +65,7 @@ class TracerProvider {
 
   /**
    * generates a span processor for exporter object containing a type and config
-   * @param {Object} exporter  exporter object with exporter_type and config
+   * @param {Object} exporter  exporter object with exporter_type and config 
    */
   generateSpanProcessorForExporter (exporter) {
     const exporterObject = buildExporter(exporter.exporter_type, exporter.config);
@@ -75,7 +75,7 @@ class TracerProvider {
     this.exporters[exporter.exporter_type] = exporterObject;
   }
 
-  /**
+  /** 
    * adds a spanprocessor object to the current active (default) TracerProvider
    * @param {SpanProcessor} spanProcessor  exporter object with exporter_type and config
    */
@@ -84,7 +84,7 @@ class TracerProvider {
   }
 
 
-  /**
+  /** 
    * adds an instrumentation object to the current active (default) TracerProvider
    * @param {[InstrumentationOption]} instrumentationInstance  instrumentation object
    */
@@ -95,18 +95,18 @@ class TracerProvider {
     });
   }
 
-  /**
+  /** 
    * disables existing exporter if active
-   * @param {string} exporter_type exporter types from AVAILABLE_EXPORTERS
+   * @param {string} exporterType exporter types from AVAILABLE_EXPORTERS
    */
-  disableExporter (exporter_type) {
-    if (this.exporters[exporter_type]) {
-      this.exporters[exporter_type].shutdown();
-      delete this.exporters[exporter_type];
+  disableExporter (exporterType) {
+    if (this.exporters[exporterType]) {
+      this.exporters[exporterType].shutdown();
+      delete this.exporters[exporterType];
     }
   }
 
-  /**
+  /** 
    * disables the current tracer provider
    */
   shutdown () {
@@ -115,14 +115,14 @@ class TracerProvider {
   }
 
 
-  /**
+  /** 
    * checks if the current tracer provider is active
    */
   isAlive () {
     return this.currentConfig.active;
   }
 
-  /**
+  /** 
    * registers the current tracer provider as the active tracer provider with the api
    */
   initializeTracer () {
