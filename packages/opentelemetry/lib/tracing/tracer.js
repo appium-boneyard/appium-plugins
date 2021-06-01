@@ -28,7 +28,7 @@ class Tracer {
 
   /**
    * monkeypathces argument async function to instrument it via a span object
-   * @param { string } name  [name of the span]
+   * @param { string } name  name of the span
    * @param { Function } fn original function to monkeypatch
    * @param { Span } parentSpan (Optional) parentSpan to get context from
    * @param { SpanOptions } spanOptions (Optional) span options
