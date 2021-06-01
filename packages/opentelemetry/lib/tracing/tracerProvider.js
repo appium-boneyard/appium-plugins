@@ -38,7 +38,7 @@ class TracerProvider {
       instrumentation: this._serverInstrumentation.instrumentations,
       tracerProvider: this.provider
     });
-    this.currentConfig = {
+    this._currentConfig = {
       active: true,
       currentExporters: [AVAILABLE_EXPORTERS.CONSOLE],
       exporters:
@@ -51,8 +51,12 @@ class TracerProvider {
     };
   }
 
-  getCurrentConfig () {
-    return _.cloneDeep(this.currentConfig);
+  get currentConfig () {
+    return _.cloneDeep(this._currentConfig);
+  }
+
+  set currentConfig (config) {
+    this._currentConfig = config;
   }
 
   /**
@@ -60,8 +64,8 @@ class TracerProvider {
    * @param {exporter} exporter  exporter object with exporter_type and config
    */
   addExporterToConfig (exporter) {
-    this.currentConfig.current_exporters.push(exporter.exporter_type);
-    this.currentConfig.exporters.push(exporter);
+    this._currentConfig.current_exporters.push(exporter.exporter_type);
+    this._currentConfig.exporters.push(exporter);
   }
 
   /**
@@ -111,7 +115,7 @@ class TracerProvider {
    * disables the current tracer provider
    */
   shutdown () {
-    this.currentConfig.active = false;
+    this._currentConfig.active = false;
     this.provider.shutdown();
   }
 
