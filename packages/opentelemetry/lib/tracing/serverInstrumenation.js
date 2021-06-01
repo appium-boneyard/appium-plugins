@@ -2,6 +2,7 @@
 
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
+import { InstrumentationBase } from '@opentelemetry/instrumentation';
 
 class ServerInstrumentation {
   constructor () {
@@ -18,6 +19,12 @@ class ServerInstrumentation {
     this._httpInstrumentation.setConfig(this._httpCurrentConfig);
   }
 
+  /**
+   * get the server instrumentation instances as an array
+   *
+   *
+   * @return {[InstrumentationBase]}
+   */
   get instrumentations () {
     return [this._httpInstrumentation, this._expressInstrumentation];
   }

@@ -28,10 +28,10 @@
     "@opentelemetry/instrumentation-express": "^0.16.0",
     "@opentelemetry/instrumentation-grpc": "^0.19.0",
     "@opentelemetry/instrumentation-http": "^0.19.0",
-    "@opentelemetry/node": "^0.18.x"
+    "@opentelemetry/node": "^0.18.x",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@opentelemetry/api": "^0.18.x",
-    "@types/express": "^4.17.12"
+    "@types/lodash": "^4.14.170"
   }
 }

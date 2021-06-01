@@ -8,6 +8,7 @@ import { ServerInstrumentation } from './serverInstrumenation';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 import { SpanProcessor, } from '@opentelemetry/tracing';
 import { ExporterConfig } from '@opentelemetry/exporter-jaeger';
+import _ from 'lodash';
 
 //Delegate
 class TracerProvider {
@@ -51,7 +52,7 @@ class TracerProvider {
   }
 
   getCurrentConfig () {
-    return JSON.parse(JSON.stringify(this.currentConfig));
+    return _.cloneDeep(this.currentConfig);
   }
 
   /**
