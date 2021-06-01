@@ -7,6 +7,7 @@ import { registerInstrumentations, InstrumentationOption } from '@opentelemetry/
 import { ServerInstrumentation } from './serverInstrumenation';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 import { SpanProcessor, } from '@opentelemetry/tracing';
+import { ExporterConfig } from '@opentelemetry/exporter-jaeger';
 
 //Delegate
 class TracerProvider {
@@ -15,6 +16,12 @@ class TracerProvider {
     this.exporters = {};
     this.init();
   }
+
+  /**
+   * @typedef {Object} exporter
+   * @property {string} exporter_type - exporterType of the exporter
+   * @property {ExporterConfig} config - config for that specific exporter_type
+   */
 
   init () {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
@@ -30,10 +37,9 @@ class TracerProvider {
       instrumentation: this._serverInstrumentation.instrumentations,
       tracerProvider: this.provider
     });
-    this._active = true;
     this.currentConfig = {
-      active: this._active,
-      current_exporters: [AVAILABLE_EXPORTERS.CONSOLE],
+      active: true,
+      currentExporters: [AVAILABLE_EXPORTERS.CONSOLE],
       exporters:
         [
           {
@@ -50,7 +56,7 @@ class TracerProvider {
 
   /**
    * adds exporter type and config to currentConfig
-   * @param {[Object]} exporter  [exporter object with exporter_type and config]
+   * @param {exporter} exporter  exporter object with exporter_type and config
    */
   addExporterToConfig (exporter) {
     this.currentConfig.current_exporters.push(exporter.exporter_type);
@@ -59,7 +65,7 @@ class TracerProvider {
 
   /**
    * generates a span processor for exporter object containing a type and config
-   * @param {[Object]} exporter  [exporter object with exporter_type and config]
+   * @param {Object} exporter  exporter object with exporter_type and config
    */
   generateSpanProcessorForExporter (exporter) {
     const exporterObject = buildExporter(exporter.exporter_type, exporter.config);
@@ -71,7 +77,7 @@ class TracerProvider {
 
   /**
    * adds a spanprocessor object to the current active (default) TracerProvider
-   * @param {[SpanProcessor]} exporter  [exporter object with exporter_type and config]
+   * @param {SpanProcessor} spanProcessor  exporter object with exporter_type and config
    */
   addSpanProcessor (spanProcessor) {
     this.provider.addSpanProcessor(spanProcessor);
@@ -80,7 +86,7 @@ class TracerProvider {
 
   /**
    * adds an instrumentation object to the current active (default) TracerProvider
-   * @param {[InstrumentationOption]} instrumentationInstance  [instrumentation object]
+   * @param {[InstrumentationOption]} instrumentationInstance  instrumentation object
    */
   registerInstrumentation (instrumentationInstance) {
     registerInstrumentations({
@@ -91,7 +97,7 @@ class TracerProvider {
 
   /**
    * disables existing exporter if active
-   * @param {string} exporter_type [exporter types from AVAILABLE_EXPORTERS]
+   * @param {string} exporter_type exporter types from AVAILABLE_EXPORTERS
    */
   disableExporter (exporter_type) {
     if (this.exporters[exporter_type]) {
@@ -104,7 +110,7 @@ class TracerProvider {
    * disables the current tracer provider
    */
   shutdown () {
-    this._active = false;
+    this.currentConfig.active = false;
     this.provider.shutdown();
   }
 
@@ -113,7 +119,7 @@ class TracerProvider {
    * checks if the current tracer provider is active
    */
   isAlive () {
-    return this._active;
+    return this.currentConfig.active;
   }
 
   /**

@@ -14,7 +14,6 @@ class ServerInstrumentation {
     };
   }
 
-
   updateCurrentConfig () {
     this._httpInstrumentation.setConfig(this._httpCurrentConfig);
   }
@@ -24,23 +23,22 @@ class ServerInstrumentation {
   }
 
   /**
- * Optionally add a ignore string or a regex to avoid instrumenting that incoming path which matches the string or regex
- *
- *
- * @param { string | RegExp } path  [the incoming path to be ignored]
- */
+   * Optionally add a ignore string or a regex to avoid instrumenting that incoming path which matches the string or regex
+   *
+   *
+   * @param { string | RegExp } path  the incoming path to be ignored
+   */
   addIncomingIgnoreMatchers (path) {
     this._httpCurrentConfig.ignoreIncomingPaths.append(path);
     this.updateCurrentConfig();
   }
 
   /**
-  ** Optionally add a ignore string or a regex to avoid instrumenting that outgoing url which matches the string or regex
-  *
-  *
-  * @param { string | RegExp } url  [the outgoing url (string or regex) to be ignored]
-  */
-
+   * Optionally add a ignore string or a regex to avoid instrumenting that outgoing url which matches the string or regex
+   *
+   *
+   * @param { string | RegExp } url the outgoing url (string or regex) to be ignored
+   */
   addOutgoingUrlIgnoreMatchers (url) {
     this._httpCurrentConfig.ignoreOutgoingUrls.append(url);
     this.updateCurrentConfig();

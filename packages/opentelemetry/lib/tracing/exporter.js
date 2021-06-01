@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
+import { JaegerExporter, ExporterConfig } from '@opentelemetry/exporter-jaeger';
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { ConsoleSpanExporter, SpanExporter } from '@opentelemetry/tracing';
@@ -16,12 +16,12 @@ const AVAILABLE_EXPORTERS = {
 };
 
 /**
-   * factory to create exporter instance for a given exporter type and optional config
-   * @param {string} exporterType
-   * @param {Object} config
-   * @return {SpanExporter}
-   * @throws Will throw an error if the exporter_type is invalid or null
-   */
+ * factory to create exporter instance for a given exporter type and optional config
+ * @param {string} exporterType
+ * @param {ExporterConfig} config
+ * @return {SpanExporter}
+ * @throws Will throw an error if the exporterType is invalid or null
+*/
 function buildExporter (exporterType, config = null) {
   switch (exporterType) {
     case AVAILABLE_EXPORTERS.JAGGER:

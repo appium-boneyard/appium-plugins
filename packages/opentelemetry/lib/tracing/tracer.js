@@ -13,14 +13,12 @@ class Tracer {
   }
 
   /**
- * creates a span object with optional parent span and optional span options
- *
- *
- * @param { string } name  [name of the span]
- * @param { Span } parentSpan [(Optional) parentSpan to get context from]
- * @param { SpanOptions } spanOptions [(Optional) span options]
- * @return { Span }
- */
+   * creates a span object with optional parent span and optional span options
+   * @param { string } name  name of the span
+   * @param { Span } parentSpan (Optional) parentSpan to get context from
+   * @param { SpanOptions } spanOptions (Optional) span options
+   * @return { Span }
+   */
   createSpanObject (name, parentSpan = null, spanOptions = null) {
     //TODO - verify setting context from parentSpan
     const context = parentSpan ? api.setSpan(api.context.active(), parentSpan) : null;
@@ -29,21 +27,18 @@ class Tracer {
 
 
   /**
- * monkeypathces argument async function to instrument it via a span object
- *
- *
- * @param { string } name  [name of the span]
- * @param { Function } fn [original function to monkeypatch]
- * @param { Span } parentSpan [(Optional) parentSpan to get context from]
- * @param { SpanOptions } spanOptions [(Optional) span options]
- * @return { Function }
- */
+   * monkeypathces argument async function to instrument it via a span object
+   * @param { string } name  [name of the span]
+   * @param { Function } fn original function to monkeypatch
+   * @param { Span } parentSpan (Optional) parentSpan to get context from
+   * @param { SpanOptions } spanOptions (Optional) span options
+   * @return { Function }
+   */
   instrumentAsyncMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = async (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
         const ret = await fn.call(...args);
-        span.end();
         return ret;
       } catch (error) {
         span.setStatus({
@@ -59,21 +54,18 @@ class Tracer {
   }
 
   /**
- * monkeypathces argument function to instrument it via a span object
- *
- *
- * @param { string } name  [name of the span]
- * @param { Function } fn [original function to monkeypatch]
- * @param { Span } parentSpan [(Optional) parentSpan to get context from]
- * @param { SpanOptions } spanOptions [(Optional) span options]
- * @return { Function }
- */
+  * monkeypathces argument function to instrument it via a span object
+  * @param { string } name  name of the span
+  * @param { Function } fn original function to monkeypatch
+  * @param { Span } parentSpan (Optional) parentSpan to get context from
+  * @param { SpanOptions } spanOptions (Optional) span options
+  * @return { Function }
+  */
   instrumentMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
         const ret = fn.call(...args);
-        span.end();
         return ret;
       } catch (error) {
         span.setStatus({

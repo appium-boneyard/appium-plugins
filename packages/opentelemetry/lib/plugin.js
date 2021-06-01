@@ -20,26 +20,26 @@ export default class OpentelemetryPlugin extends BasePlugin {
     expressApp.get('/opentelemetry/status', OpentelemetryPlugin.getStatus);
   }
 
-  static getOpentelemetryConfig (_req, res) {
-    res.send(JSON.stringify(tracerProviderInstance.getCurrentConfig()));
+  static getOpentelemetryConfig (req, res) {
+    return res.send(JSON.stringify(tracerProviderInstance.getCurrentConfig()));
   }
 
-  static setOpentelemetryConfig (_req, res) {
-    const opentelemetryBlob = _req.body;
+  static setOpentelemetryConfig (req, res) {
+    const opentelemetryBlob = req.body;
     const exporterBlob = opentelemetryBlob.exporter;
     if (!exporterBlob) {
       return res.send(JSON.stringify({ status: STATUS_MESSAGE.FAILURE, message: STATUS_MESSAGE.INVALID_EXPORTER_ERROR_MESSAGE }));
     }
     try {
       tracerProviderInstance.generateSpanProcessorForExporter(exporterBlob);
-      res.send(JSON.stringify({status: STATUS_MESSAGE.SUCCESS}));
+      res.send(JSON.stringify({ status: STATUS_MESSAGE.SUCCESS }));
     } catch (error) {
       res.send(JSON.stringify({ status: STATUS_MESSAGE.FAILURE, message: error.message }));
     }
   }
 
-  static getStatus (_req, res) {
+  static getStatus (req, res) {
     const message = tracerProviderInstance.isAlive() ? STATUS_MESSAGE.ACTIVE : STATUS_MESSAGE.INACTIVE;
-    res.send(JSON.stringify({status: message}));
+    res.send(JSON.stringify({ status: message }));
   }
 }
