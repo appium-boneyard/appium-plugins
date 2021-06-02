@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 
-import { TraceAPI as api, SpanStatusCode, SpanOptions } from '@opentelemetry/api';
+import TraceAPI, { SpanStatusCode, SpanOptions, setSpan } from '@opentelemetry/api';
 
 import { Span } from '@opentelemetry/tracing';
 
 class Tracer {
 
   constructor (tracerProviderInstance, name, options = {}) {
-    this.tracingProvider = tracerProviderInstance;
+    this._tracerProvider = tracerProviderInstance;
     const { version } = options;
-    this._tracer = api.trace.getTracer(name, version);
+    this._tracer = TraceAPI.trace.getTracer(name, version);
   }
 
   /**
@@ -21,13 +21,12 @@ class Tracer {
    */
   createSpanObject (name, parentSpan = null, spanOptions = null) {
     //TODO - verify setting context from parentSpan
-    const context = parentSpan ? api.setSpan(api.context.active(), parentSpan) : null;
+    const context = parentSpan ? setSpan(TraceAPI.context.active(), parentSpan) : null;
     return this._tracer.startSpan(name, spanOptions, context);
   }
 
-
   /**
-   * monkeypathces argument async function to instrument it via a span object
+   * monkeypatches argument async function to instrument it via a span object
    * @param { string } name  name of the span
    * @param { Function } fn original function to monkeypatch
    * @param { Span } parentSpan (Optional) parentSpan to get context from
@@ -38,8 +37,7 @@ class Tracer {
     const spannerFunction = async (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
-        const ret = await fn.call(...args);
-        return ret;
+        return await fn.call(...args);
       } catch (error) {
         span.setStatus({
           code: SpanStatusCode.ERROR,
@@ -65,8 +63,7 @@ class Tracer {
     const spannerFunction = (...args) => {
       const span = this.createSpanObject(name, parentSpan, spanOptions);
       try {
-        const ret = fn.call(...args);
-        return ret;
+        return fn.call(...args);
       } catch (error) {
         span.setStatus({
           code: SpanStatusCode.ERROR,

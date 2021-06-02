@@ -3,6 +3,7 @@
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 import { InstrumentationBase } from '@opentelemetry/instrumentation';
+import _ from 'lodash';
 
 class ServerInstrumentation {
   constructor () {
@@ -29,6 +30,14 @@ class ServerInstrumentation {
     return [this._httpInstrumentation, this._expressInstrumentation];
   }
 
+  get httpCurrentConfig () {
+    return _.cloneDeep(this._httpCurrentConfig);
+  }
+
+  set httpCurrentConfig (config) {
+    this._httpCurrentConfig = config;
+  }
+
   /**
    * Optionally add a ignore string or a regex to avoid instrumenting that incoming path which matches the string or regex
    *
@@ -36,7 +45,7 @@ class ServerInstrumentation {
    * @param { string | RegExp } path  the incoming path to be ignored
    */
   addIncomingIgnoreMatchers (path) {
-    this._httpCurrentConfig.ignoreIncomingPaths.append(path);
+    this._httpCurrentConfig.ignoreIncomingPaths.push(path);
     this.updateCurrentConfig();
   }
 
@@ -47,7 +56,7 @@ class ServerInstrumentation {
    * @param { string | RegExp } url the outgoing url (string or regex) to be ignored
    */
   addOutgoingUrlIgnoreMatchers (url) {
-    this._httpCurrentConfig.ignoreOutgoingUrls.append(url);
+    this._httpCurrentConfig.ignoreOutgoingUrls.push(url);
     this.updateCurrentConfig();
   }
 

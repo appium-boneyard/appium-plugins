@@ -41,5 +41,11 @@
     "test:e2e": "mocha -t 160000 ./build/test/e2e/*-specs.js",
     "copyfiles": "copyfiles ./test/fixtures/*.png ./build"
   },
-  "gitHead": "6bada81cddda35d888a883396fef1843608c271b"
+  "gitHead": "6bada81cddda35d888a883396fef1843608c271b",
+  "devDependencies": {
+    "@types/chai": "^4.2.18",
+    "@types/chai-as-promised": "^7.1.4",
+    "@types/lodash": "^4.14.170",
+    "@types/sinon": "^10.0.1"
+  }
 }

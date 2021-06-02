@@ -5,7 +5,6 @@ import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { ConsoleSpanExporter, SpanExporter } from '@opentelemetry/tracing';
 
-
 const DEFAULT_SERVICE_NAME = 'appium';
 
 const AVAILABLE_EXPORTERS = {
@@ -29,7 +28,7 @@ function buildExporter (exporterType, config = null) {
     case AVAILABLE_EXPORTERS.ZIPKIN:
       return new ZipkinExporter(config || { serviceName: DEFAULT_SERVICE_NAME });
     case AVAILABLE_EXPORTERS.PROMETHEUS:
-      return new PrometheusExporter(config);
+      return new PrometheusExporter(config || {});
     case AVAILABLE_EXPORTERS.CONSOLE:
       return new ConsoleSpanExporter();
   }

@@ -1,93 +1,80 @@
 /* eslint-disable no-unused-vars */
 
-import { getBatchSpanProcessor } from './spanProcessor';
-import { buildExporter, AVAILABLE_EXPORTERS } from './exporter';
+import { getBatchSpanProcessor } from './spanProcessorFactory';
+import { buildExporter, AVAILABLE_EXPORTERS } from './exporterFactory';
 import { NodeTracerProvider } from '@opentelemetry/node';
 import { registerInstrumentations, InstrumentationOption } from '@opentelemetry/instrumentation';
 import { ServerInstrumentation } from './serverInstrumenation';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
-import { SpanProcessor, } from '@opentelemetry/tracing';
+import { SpanProcessor } from '@opentelemetry/tracing';
 import { ExporterConfig } from '@opentelemetry/exporter-jaeger';
 import _ from 'lodash';
+import { forEachPromise } from '../utils';
 
 //Delegate
 class TracerProvider {
   constructor () {
     this.provider = new NodeTracerProvider();
     this.exporters = {};
+    this._currentConfig = {
+      active: true,
+      exporters: []
+    };
     this.init();
   }
 
   /**
    * @typedef {Object} exporter
-   * @property {string} exporter_type - exporterType of the exporter
-   * @property {ExporterConfig} config - config for that specific exporter_type
+   * @property {string} exporterType - exporterType of the exporter
+   * @property {ExporterConfig} config - config for that specific exporterType
     */
 
   init () {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
     this.provider.register();
 
-    const consoleExporter = buildExporter(AVAILABLE_EXPORTERS.CONSOLE);
-    const spanProcessor = getBatchSpanProcessor(consoleExporter);
-    this.addSpanProcessor(spanProcessor);
-    this.exporters[AVAILABLE_EXPORTERS.CONSOLE] = consoleExporter;
-
     this._serverInstrumentation = new ServerInstrumentation();
     registerInstrumentations({
       instrumentation: this._serverInstrumentation.instrumentations,
       tracerProvider: this.provider
     });
-    this._currentConfig = {
-      active: true,
-      currentExporters: [AVAILABLE_EXPORTERS.CONSOLE],
-      exporters:
-        [
-          {
-            exporter_type: 'console',
-            config: {}
-          }
-        ]
-    };
+
+    this.registerExporter({
+      exporterType: AVAILABLE_EXPORTERS.CONSOLE
+    });
   }
 
   get currentConfig () {
     return _.cloneDeep(this._currentConfig);
   }
 
-  set currentConfig (config) {
-    this._currentConfig = config;
-  }
-
   /**
    * adds exporter type and config to currentConfig
-   * @param {exporter} exporter  exporter object with exporter_type and config
+   * @param {exporter} exporter  exporter object with exporterType and config
    */
-  addExporterToConfig (exporter) {
-    this._currentConfig.current_exporters.push(exporter.exporter_type);
+  addExporter (exporterObject, exporter) {
+    this.exporters[exporter.exporterType] = exporterObject;
     this._currentConfig.exporters.push(exporter);
   }
 
   /**
    * generates a span processor for exporter object containing a type and config
-   * @param {Object} exporter  exporter object with exporter_type and config
+   * @param {Object} exporter  exporter object with exporterType and config
    */
-  generateSpanProcessorForExporter (exporter) {
-    const exporterObject = buildExporter(exporter.exporter_type, exporter.config);
+  registerExporter (exporter) {
+    const exporterObject = buildExporter(exporter.exporterType, exporter.config);
     const spanProcessor = getBatchSpanProcessor(exporterObject);
-    tracerProviderInstance.addSpanProcessor(spanProcessor);
-    this.addExporterToConfig(exporter);
-    this.exporters[exporter.exporter_type] = exporterObject;
+    this.addSpanProcessor(spanProcessor);
+    this.addExporter(exporterObject, exporter);
   }
 
   /**
    * adds a spanprocessor object to the current active (default) TracerProvider
-   * @param {SpanProcessor} spanProcessor  exporter object with exporter_type and config
+   * @param {SpanProcessor} spanProcessor  exporter object with exporterType and config
    */
   addSpanProcessor (spanProcessor) {
     this.provider.addSpanProcessor(spanProcessor);
   }
-
 
   /**
    * adds an instrumentation object to the current active (default) TracerProvider
@@ -104,21 +91,26 @@ class TracerProvider {
    * disables existing exporter if active
    * @param {string} exporterType exporter types from AVAILABLE_EXPORTERS
    */
-  disableExporter (exporterType) {
+  async disableExporter (exporterType) {
     if (this.exporters[exporterType]) {
-      this.exporters[exporterType].shutdown();
+      await this.exporters[exporterType].shutdown();
       delete this.exporters[exporterType];
     }
+    this._currentConfig.exporters = this._currentConfig.exporters.filter(function (item) {
+      return item.exporterType !== exporterType;
+    });
   }
 
   /**
    * disables the current tracer provider
    */
-  shutdown () {
+  async shutdown () {
     this._currentConfig.active = false;
-    this.provider.shutdown();
+    const exporterList = Object.keys(this.exporters);
+    await forEachPromise(exporterList, async (exporterType) => {
+      await this.disableExporter(exporterType);
+    });
   }
-
 
   /**
    * checks if the current tracer provider is active
@@ -132,6 +124,17 @@ class TracerProvider {
    */
   initializeTracer () {
     this.provider.register();
+  }
+
+  async reset () {
+    const exporterList = Object.keys(this.exporters);
+    await forEachPromise(exporterList, async (exporterType) => {
+      await this.disableExporter(exporterType);
+    });
+    this.registerExporter({
+      exporterType: AVAILABLE_EXPORTERS.CONSOLE
+    });
+    this._currentConfig.active = true;
   }
 }
 

@@ -31,7 +31,7 @@ export default class OpentelemetryPlugin extends BasePlugin {
       return res.send(JSON.stringify({ status: STATUS_MESSAGE.FAILURE, message: STATUS_MESSAGE.INVALID_EXPORTER_ERROR_MESSAGE }));
     }
     try {
-      tracerProviderInstance.generateSpanProcessorForExporter(exporterBlob);
+      tracerProviderInstance.registerExporter(exporterBlob);
       res.send(JSON.stringify({ status: STATUS_MESSAGE.SUCCESS }));
     } catch (error) {
       res.send(JSON.stringify({ status: STATUS_MESSAGE.FAILURE, message: error.message }));
