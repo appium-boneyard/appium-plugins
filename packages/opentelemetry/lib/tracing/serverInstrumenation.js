@@ -42,7 +42,7 @@ class ServerInstrumentation {
    * Optionally add a ignore string or a regex to avoid instrumenting that incoming path which matches the string or regex
    *
    *
-   * @param { string | RegExp } path  the incoming path to be ignored
+   * @param {string | RegExp} path  the incoming path to be ignored
    */
   addIncomingIgnoreMatchers (path) {
     this._httpCurrentConfig.ignoreIncomingPaths.push(path);
@@ -53,7 +53,7 @@ class ServerInstrumentation {
    * Optionally add a ignore string or a regex to avoid instrumenting that outgoing url which matches the string or regex
    *
    *
-   * @param { string | RegExp } url the outgoing url (string or regex) to be ignored
+   * @param {string | RegExp} url the outgoing url (string or regex) to be ignored
    */
   addOutgoingUrlIgnoreMatchers (url) {
     this._httpCurrentConfig.ignoreOutgoingUrls.push(url);
@@ -64,7 +64,7 @@ class ServerInstrumentation {
    * Optionally add a servername to add as an attribute to the span
    *
    *
-   * @param { string } name
+   * @param {string} name
    */
   updateServerName (name) {
     this._httpCurrentConfig.serverName = name;
@@ -75,7 +75,7 @@ class ServerInstrumentation {
    * Optionally add a request hook to intercept any requests and update the attributes
    *
    *
-   * @param { Function } hook
+   * @param {Function} hook
    */
   addRequestHook (hook) {
     this._httpCurrentConfig.requestHook = hook;

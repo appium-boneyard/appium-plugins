@@ -102,14 +102,12 @@ class TracerProvider {
   }
 
   /**
-   * disables the current tracer provider
+   * disables the current tracer provider and all its associated exporters
    */
   async shutdown () {
     this._currentConfig.active = false;
     const exporterList = Object.keys(this.exporters);
-    await forEachPromise(exporterList, async (exporterType) => {
-      await this.disableExporter(exporterType);
-    });
+    await this.disableAllExporters();
   }
 
   /**
@@ -126,15 +124,25 @@ class TracerProvider {
     this.provider.register();
   }
 
+  /**
+   * resets the current active tracer provider to its original state
+   */
   async reset () {
-    const exporterList = Object.keys(this.exporters);
-    await forEachPromise(exporterList, async (exporterType) => {
-      await this.disableExporter(exporterType);
-    });
+    await this.disableAllExporters();
     this.registerExporter({
       exporterType: AVAILABLE_EXPORTERS.CONSOLE
     });
     this._currentConfig.active = true;
+  }
+
+  /**
+   * disables all exporters associated with the current active tracer provider
+   */
+  async disableAllExporters () {
+    const exporterList = Object.keys(this.exporters);
+    await forEachPromise(exporterList, async (exporterType) => {
+      await this.disableExporter(exporterType);
+    });
   }
 }
 

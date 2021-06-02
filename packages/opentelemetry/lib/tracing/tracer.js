@@ -1,23 +1,23 @@
 /* eslint-disable no-unused-vars */
 
-import TraceAPI, { SpanStatusCode, SpanOptions, setSpan } from '@opentelemetry/api';
+import TraceAPI, {SpanStatusCode, SpanOptions, setSpan } from '@opentelemetry/api';
 
-import { Span } from '@opentelemetry/tracing';
+import {Span } from '@opentelemetry/tracing';
 
 class Tracer {
 
   constructor (tracerProviderInstance, name, options = {}) {
     this._tracerProvider = tracerProviderInstance;
-    const { version } = options;
+    const {version } = options;
     this._tracer = TraceAPI.trace.getTracer(name, version);
   }
 
   /**
    * creates a span object with optional parent span and optional span options
-   * @param { string } name  name of the span
-   * @param { Span } parentSpan (Optional) parentSpan to get context from
-   * @param { SpanOptions } spanOptions (Optional) span options
-   * @return { Span }
+   * @param {string} name  name of the span
+   * @param {Span} parentSpan (Optional) parentSpan to get context from
+   * @param {SpanOptions} spanOptions (Optional) span options
+   * @return {Span}
    */
   createSpanObject (name, parentSpan = null, spanOptions = null) {
     //TODO - verify setting context from parentSpan
@@ -27,11 +27,11 @@ class Tracer {
 
   /**
    * monkeypatches argument async function to instrument it via a span object
-   * @param { string } name  name of the span
-   * @param { Function } fn original function to monkeypatch
-   * @param { Span } parentSpan (Optional) parentSpan to get context from
-   * @param { SpanOptions } spanOptions (Optional) span options
-   * @return { Function }
+   * @param {string} name  name of the span
+   * @param {Function} fn original function to monkeypatch
+   * @param {Span} parentSpan (Optional) parentSpan to get context from
+   * @param {SpanOptions} spanOptions (Optional) span options
+   * @return {Function}
    */
   instrumentAsyncMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = async (...args) => {
@@ -53,11 +53,11 @@ class Tracer {
 
   /**
   * monkeypathces argument function to instrument it via a span object
-  * @param { string } name  name of the span
-  * @param { Function } fn original function to monkeypatch
-  * @param { Span } parentSpan (Optional) parentSpan to get context from
-  * @param { SpanOptions } spanOptions (Optional) span options
-  * @return { Function }
+  * @param {string} name  name of the span
+  * @param {Function} fn original function to monkeypatch
+  * @param {Span} parentSpan (Optional) parentSpan to get context from
+  * @param {SpanOptions} spanOptions (Optional) span options
+  * @return {Function}
   */
   instrumentMethod (name, fn, parentSpan = null, spanOptions = null) {
     const spannerFunction = (...args) => {
