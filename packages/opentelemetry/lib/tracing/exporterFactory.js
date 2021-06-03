@@ -17,7 +17,7 @@ const AVAILABLE_EXPORTERS = {
 /**
  * factory to create exporter instance for a given exporter type and optional config
  * @param {string} exporterType
- * @param {ExporterConfig} config
+ * @param {?ExporterConfig} config
  * @return {SpanExporter}
  * @throws Will throw an error if the exporterType is invalid or null
 */

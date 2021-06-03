@@ -6,7 +6,7 @@ const STATUS_MESSAGE = {
   INACTIVE: 'inactive',
   SUCCESS: 'success',
   FAILURE: 'failure',
-  INVALID_EXPORTER_ERROR_MESSAGE: 'invalid exporter object'
+  INVALID_EXPORTER_ERROR: 'invalid exporter object'
 };
 
 export default class OpentelemetryPlugin extends BasePlugin {
@@ -15,30 +15,31 @@ export default class OpentelemetryPlugin extends BasePlugin {
   }
 
   static async updateServer (expressApp/*, httpServer*/) { // eslint-disable-line require-await
-    expressApp.post('/opentelemetry/config', OpentelemetryPlugin.setOpentelemetryConfig);
-    expressApp.get('/opentelemetry/config', OpentelemetryPlugin.getOpentelemetryConfig);
-    expressApp.get('/opentelemetry/status', OpentelemetryPlugin.getStatus);
+    expressApp.post('/opentelemetry/config', OpentelemetryPlugin.handleSetOpentelemetryConfig);
+    expressApp.get('/opentelemetry/config', OpentelemetryPlugin.handleGetOpentelemetryConfig);
+    expressApp.get('/opentelemetry/status', OpentelemetryPlugin.handleGetStatus);
   }
 
-  static getOpentelemetryConfig (req, res) {
+  static handleGetOpentelemetryConfig (req, res) {
     return res.send(JSON.stringify(tracerProviderInstance.getCurrentConfig()));
   }
 
-  static setOpentelemetryConfig (req, res) {
+  static handleSetOpentelemetryConfig (req, res) {
     const opentelemetryBlob = req.body;
-    const exporterBlob = opentelemetryBlob.exporter;
-    if (!exporterBlob) {
-      return res.send(JSON.stringify({ status: STATUS_MESSAGE.FAILURE, message: STATUS_MESSAGE.INVALID_EXPORTER_ERROR_MESSAGE }));
+    const exporterConfig = opentelemetryBlob.exporter;
+    if (!exporterConfig) {
+      const response = JSON.stringify({ status: STATUS_MESSAGE.FAILURE, message: STATUS_MESSAGE.INVALID_EXPORTER_ERROR });
+      return res.send(response);
     }
     try {
-      tracerProviderInstance.registerExporter(exporterBlob);
+      tracerProviderInstance.registerExporter(exporterConfig);
       res.send(JSON.stringify({ status: STATUS_MESSAGE.SUCCESS }));
     } catch (error) {
       res.send(JSON.stringify({ status: STATUS_MESSAGE.FAILURE, message: error.message }));
     }
   }
 
-  static getStatus (req, res) {
+  static handleGetStatus (req, res) {
     const message = tracerProviderInstance.isAlive() ? STATUS_MESSAGE.ACTIVE : STATUS_MESSAGE.INACTIVE;
     res.send(JSON.stringify({ status: message }));
   }

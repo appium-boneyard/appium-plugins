@@ -6,7 +6,7 @@ import { NodeTracerProvider } from '@opentelemetry/node';
 import { registerInstrumentations, InstrumentationOption } from '@opentelemetry/instrumentation';
 import { ServerInstrumentation } from './serverInstrumenation';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
-import { SpanProcessor } from '@opentelemetry/tracing';
+import { SpanProcessor, SpanExporter } from '@opentelemetry/tracing';
 import { ExporterConfig } from '@opentelemetry/exporter-jaeger';
 import _ from 'lodash';
 import { forEachPromise } from '../utils';
@@ -15,19 +15,13 @@ import { forEachPromise } from '../utils';
 class TracerProvider {
   constructor () {
     this.provider = new NodeTracerProvider();
-    this.exporters = {};
+    this.exporterInstances = {};
     this._currentConfig = {
       active: true,
-      exporters: []
+      exporterConfig: []
     };
     this.init();
   }
-
-  /**
-   * @typedef {Object} exporter
-   * @property {string} exporterType - exporterType of the exporter
-   * @property {ExporterConfig} config - config for that specific exporterType
-    */
 
   init () {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
@@ -48,29 +42,36 @@ class TracerProvider {
     return _.cloneDeep(this._currentConfig);
   }
 
+
   /**
-   * adds exporter type and config to currentConfig
-   * @param {exporter} exporter  exporter object with exporterType and config
+   * @typedef {Object} exporterConfig
+   * @property {string} exporterType - exporterType of the exporter
+   * @property {ExporterConfig} config - config for that specific exporterType
    */
-  addExporter (exporterObject, exporter) {
-    this.exporters[exporter.exporterType] = exporterObject;
-    this._currentConfig.exporters.push(exporter);
+  /**
+   * adds exporterInstance and exporterConfig to currentConfig
+   * @param {SpanExporter} exporterInstance SpanExporter instance object
+   * @param {exporterConfig} exporterConfig exporter object with exporterType and config
+   */
+  addExporter (exporterInstance, exporterConfig) {
+    this.exporterInstances[exporterConfig.exporterType] = exporterInstance;
+    this._currentConfig.exporterConfig.push(exporterConfig);
   }
 
   /**
    * generates a span processor for exporter object containing a type and config
-   * @param {Object} exporter  exporter object with exporterType and config
+   * @param {exporterConfig} exporterConfig exporter object with exporterType and config
    */
-  registerExporter (exporter) {
-    const exporterObject = buildExporter(exporter.exporterType, exporter.config);
-    const spanProcessor = getBatchSpanProcessor(exporterObject);
+  registerExporter (exporterConfig) {
+    const exporterInstance = buildExporter(exporterConfig.exporterType, exporterConfig.config);
+    const spanProcessor = getBatchSpanProcessor(exporterInstance);
     this.addSpanProcessor(spanProcessor);
-    this.addExporter(exporterObject, exporter);
+    this.addExporter(exporterInstance, exporterConfig);
   }
 
   /**
    * adds a spanprocessor object to the current active (default) TracerProvider
-   * @param {SpanProcessor} spanProcessor  exporter object with exporterType and config
+   * @param {SpanProcessor} spanProcessor spanProcessor to be added to current tracerProvider
    */
   addSpanProcessor (spanProcessor) {
     this.provider.addSpanProcessor(spanProcessor);
@@ -78,7 +79,7 @@ class TracerProvider {
 
   /**
    * adds an instrumentation object to the current active (default) TracerProvider
-   * @param {[InstrumentationOption]} instrumentationInstance  instrumentation object
+   * @param {InstrumentationOption} instrumentationInstance  instrumentation object
    */
   registerInstrumentation (instrumentationInstance) {
     registerInstrumentations({
@@ -92,13 +93,14 @@ class TracerProvider {
    * @param {string} exporterType exporter types from AVAILABLE_EXPORTERS
    */
   async disableExporter (exporterType) {
-    if (this.exporters[exporterType]) {
-      await this.exporters[exporterType].shutdown();
-      delete this.exporters[exporterType];
+    if (this.exporterInstances[exporterType]) {
+      try {
+        await this.exporterInstances[exporterType].shutdown();
+      } catch (error) {} finally {
+        delete this.exporterInstances[exporterType];
+      }
     }
-    this._currentConfig.exporters = this._currentConfig.exporters.filter(function (item) {
-      return item.exporterType !== exporterType;
-    });
+    this._currentConfig.exporterConfig = this._currentConfig.exporterConfig.filter((item) => item.exporterType !== exporterType);
   }
 
   /**
@@ -106,7 +108,6 @@ class TracerProvider {
    */
   async shutdown () {
     this._currentConfig.active = false;
-    const exporterList = Object.keys(this.exporters);
     await this.disableAllExporters();
   }
 
@@ -139,7 +140,7 @@ class TracerProvider {
    * disables all exporters associated with the current active tracer provider
    */
   async disableAllExporters () {
-    const exporterList = Object.keys(this.exporters);
+    const exporterList = Object.keys(this.exporterInstances);
     await forEachPromise(exporterList, async (exporterType) => {
       await this.disableExporter(exporterType);
     });

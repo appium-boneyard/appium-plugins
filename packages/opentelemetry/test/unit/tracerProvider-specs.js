@@ -19,7 +19,7 @@ describe('TracerProvider', function () {
   it('should return current config', function () {
     const expectedConfig = {
       active: true,
-      exporters: [{ exporterType: 'console'}]
+      exporterConfig: [{ exporterType: 'console'}]
     };
     expect(tracerProviderInstance.currentConfig).to.deep.equal(expectedConfig);
   });
@@ -31,7 +31,7 @@ describe('TracerProvider', function () {
     tracerProviderInstance.registerExporter(exporterConfig);
     const expectedConfig = {
       active: true,
-      exporters: [
+      exporterConfig: [
         { exporterType: 'console'},
         { exporterType: 'zipkin', config: {} }
       ]
@@ -41,7 +41,7 @@ describe('TracerProvider', function () {
   it('should disable tracer', async function () {
     const expectedConfig = {
       active: false,
-      exporters: []
+      exporterConfig: []
     };
     await tracerProviderInstance.shutdown();
     expect(tracerProviderInstance.currentConfig).to.deep.equal(expectedConfig);
@@ -55,7 +55,7 @@ describe('TracerProvider', function () {
     await tracerProviderInstance.disableExporter(exporterConfig.exporterType);
     const expectedConfig = {
       active: true,
-      exporters: [{ exporterType: 'console'}]
+      exporterConfig: [{ exporterType: 'console'}]
     };
     expect(tracerProviderInstance.currentConfig).to.deep.equal(expectedConfig);
   });
