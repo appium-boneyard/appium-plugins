@@ -31,15 +31,15 @@
     "index.js"
   ],
   "dependencies": {
+    "@appium/base-driver": "^8.0.0-beta.6",
     "@appium/base-plugin": "^1.7.0",
-    "appium-base-driver": "^8.0.0-beta.0",
-    "appium-support": "^2.53.0",
+    "@appium/support": "^2.53.0",
     "lru-cache": "^6.0.0"
   },
   "scripts": {
-    "test:unit": "mocha ./build/test/unit/*-specs.js",
-    "test:e2e": "mocha -t 160000 ./build/test/e2e/*-specs.js",
-    "copyfiles": "copyfiles ./test/fixtures/*.png ./build"
+    "test:unit": "mocha \"./build/test/unit/*-specs.js\"",
+    "test:e2e": "mocha -t 160s \"./build/test/e2e/*-specs.js\"",
+    "copyfiles": "copyfiles \"./test/fixtures/*.png\" ./build"
   },
   "gitHead": "6bada81cddda35d888a883396fef1843608c271b"
 }

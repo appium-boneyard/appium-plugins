@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { errors } from 'appium-base-driver';
+import { errors } from '@appium/base-driver';
 import log from './logger';
-import { util } from 'appium-support';
+import { util } from '@appium/support';
 import { DEFAULT_SETTINGS } from './finder';
 
 const IMAGE_ELEMENT_PREFIX = 'appium-image-element-';

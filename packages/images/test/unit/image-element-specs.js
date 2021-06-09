@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import BaseDriver from 'appium-base-driver';
+import BaseDriver from '@appium/base-driver';
 import ImageElementFinder from '../../lib/finder';
 import { getImgElFromArgs } from '../../lib/plugin';
 import ImageElement, { IMAGE_ELEMENT_PREFIX } from '../../lib/image-element';

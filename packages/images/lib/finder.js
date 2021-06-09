@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import LRU from 'lru-cache';
-import { imageUtil, util } from 'appium-support';
-import { errors } from 'appium-base-driver';
+import { imageUtil, util } from '@appium/support';
+import { errors } from '@appium/base-driver';
 import { ImageElement, DEFAULT_TEMPLATE_IMAGE_SCALE,
          IMAGE_EL_TAP_STRATEGY_W3C } from './image-element';
 import { MATCH_TEMPLATE_MODE, compareImages, DEFAULT_MATCH_THRESHOLD } from './compare';

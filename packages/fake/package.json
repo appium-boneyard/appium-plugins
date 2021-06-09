@@ -36,7 +36,7 @@
   ],
   "dependencies": {
     "@appium/base-plugin": "^1.7.0",
-    "appium-support": "2.x",
+    "@appium/support": "2.x",
     "bluebird": "^3.7.2",
     "lodash": "^4.17.11"
   },
