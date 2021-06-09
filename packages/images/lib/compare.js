@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { errors } from 'appium-base-driver';
-import { imageUtil } from 'appium-support';
+import { errors } from '@appium/base-driver';
+import { imageUtil } from '@appium/support';
 
 const MATCH_FEATURES_MODE = 'matchFeatures';
 const GET_SIMILARITY_MODE = 'getSimilarity';
@@ -20,11 +20,11 @@ const DEFAULT_MATCH_THRESHOLD = 0.4;
  * @param {string} secondImage - Base64-encoded image file.
  * All image formats, that OpenCV library itself accepts, are supported.
  * @param {?Object} options [{}] - The content of this dictionary depends
- * on the actual `mode` value. See the documentation on `appium-support`
+ * on the actual `mode` value. See the documentation on `@appium/support`
  * module for more details.
  * @returns {Object} The content of the resulting dictionary depends
  * on the actual `mode` and `options` values. See the documentation on
- * `appium-support` module for more details.
+ * `@appium/support` module for more details.
  * @throws {Error} If required OpenCV modules are not installed or
  * if `mode` value is incorrect or if there was an unexpected issue while
  * matching the images.

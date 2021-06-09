@@ -1,4 +1,4 @@
-const appiumConfig = require('eslint-config-appium');
+const appiumConfig = require('@appium/eslint-config-appium');
 Object.assign(appiumConfig.parserOptions, {
   babelOptions: {
     plugins: [

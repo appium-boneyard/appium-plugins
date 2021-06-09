@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { imageUtil } from 'appium-support';
-import BaseDriver from 'appium-base-driver';
+import { imageUtil } from '@appium/support';
+import BaseDriver from '@appium/base-driver';
 import ImageElementPlugin, { IMAGE_STRATEGY } from '../../index';
 import ImageElementFinder from '../../lib/finder';
 import ImageElement from '../../lib/image-element';

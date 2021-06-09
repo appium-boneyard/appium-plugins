@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import UniversalXMLPlugin from '../../index';
-import BaseDriver from 'appium-base-driver';
+import BaseDriver from '@appium/base-driver';
 import { XML_IOS, XML_ANDROID, XML_IOS_TRANSFORMED, XML_ANDROID_TRANSFORMED } from '../fixtures';
 import { runQuery, getNodeAttrVal } from '../../lib/xpath';
 

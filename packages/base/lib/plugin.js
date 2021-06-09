@@ -1,4 +1,4 @@
-import { logger } from 'appium-support';
+import { logger } from '@appium/support';
 
 
 export default class BasePlugin {

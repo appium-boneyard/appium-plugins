@@ -25,13 +25,13 @@
   "homepage": "https://github.com/appium/appium-plugins#readme",
   "dependencies": {
     "@appium/base-plugin": "^1.7.0",
-    "appium-base-driver": "^8.0.0-beta.4",
+    "@appium/base-driver": "^8.0.0-beta.6",
     "fast-xml-parser": "^3.17.6",
     "xmldom": "^0.6.0",
     "xpath": "0.0.32"
   },
   "scripts": {
-    "test:unit": "mocha ./build/test/unit/*-specs.js",
-    "copyfiles": "copyfiles ./test/fixtures/*.xml ./build"
+    "test:unit": "mocha \"./build/test/unit/*-specs.js\"",
+    "copyfiles": "copyfiles \"./test/fixtures/*.xml\" ./build"
   }
 }

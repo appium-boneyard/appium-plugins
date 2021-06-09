@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 
 import _ from 'lodash';
-import { errors } from 'appium-base-driver';
+import { errors } from '@appium/base-driver';
 import BasePlugin from '@appium/base-plugin';
 import { compareImages } from './compare';
 import ImageElementFinder, { W3C_ELEMENT_KEY, MJSONWP_ELEMENT_KEY } from './finder';

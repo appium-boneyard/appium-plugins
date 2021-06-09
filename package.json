@@ -2,6 +2,7 @@
   "name": "appium-plugins-monorepo",
   "private": true,
   "devDependencies": {
+    "@appium/eslint-config-appium": "^4.5.0",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "appium": "^2.0.0-beta.11",
@@ -9,7 +10,6 @@
     "chai-as-promised": "7.x",
     "copyfiles": "^2.4.1",
     "eslint": "^7.14.0",
-    "eslint-config-appium": "^4.5.0",
     "lerna": "^3.22.1",
     "mocha": "^7.0.1",
     "npm-run-all": "^4.1.5",
@@ -22,20 +22,21 @@
     "webdriverio": "^6.12.0"
   },
   "scripts": {
-    "clean": "run-s clean:* && npm install && npm run bootstrap && npm run build",
-    "clean:appiumhome": "rimraf packages/*/local_appium_home",
-    "clean:pkglock": "rimraf package-lock.json && rimraf packages/*/package-lock.json",
-    "clean:modules": "rimraf packages/*/node_modules && rimraf node_modules",
+    "clean": "run-s \"clean:*\" && npm install && npm run bootstrap && npm run build",
+    "clean:appiumhome": "rimraf \"packages/*/local_appium_home\"",
+    "clean:pkglock": "rimraf package-lock.json && rimraf \"packages/*/package-lock.json\"",
+    "clean:modules": "lerna clean -y && rimraf node_modules",
     "build": "lerna run copyfiles && node ./scripts/build.js",
     "watch": "lerna run copyfiles && node ./scripts/build.js --watch",
     "bootstrap": "lerna bootstrap --no-ci",
-    "test": "run-s test:*",
+    "test": "run-s \"test:*\"",
     "test:lint": "lerna exec --stream -- npx eslint .",
     "test:unit": "lerna run --stream test:unit",
     "test:e2e": "lerna run --stream test:e2e",
     "precommit:msg": "echo 'Running pre-commit checks...' && exit 0",
     "precommit:test": "npm run build && npm run test:lint && npm run test:unit",
-    "publish": "npm run build && lerna publish"
+    "publish": "npm run build && lerna publish",
+    "postinstall": "npm run bootstrap"
   },
   "pre-commit": [
     "precommit:msg",
