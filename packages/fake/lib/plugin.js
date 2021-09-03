@@ -9,9 +9,20 @@ export default class FakePlugin extends BasePlugin {
     super(pluginName, opts);
   }
 
+  static get argsConstraints () {
+    return {
+      sillyWebServerPort: {
+        isNumber: true
+      },
+      host: {
+        isString: true
+      },
+    };
+  }
+
   async getFakePluginArgs () {
     await B.delay(1);
-    return this.opts.pluginArgs;
+    return this.cliArgs;
   }
 
   static newMethodMap = {
