@@ -24,6 +24,15 @@ export default class BasePlugin {
 
 
   /**
+   * Override to return a validator object used to validate CLI args passed into appium as
+   * --plugin-args='{"yourPluginName": {"argName": argVal, ...}}'
+   */
+  static get argsConstraints () {
+    return {};
+  }
+
+
+  /**
    * Optionally updates an Appium express app and http server, by calling methods that may mutate
    * those objects. For example, you could call:
    *
