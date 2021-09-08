@@ -4,7 +4,7 @@
   "tags": [
     "appium"
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Appium <maintainers@appium.io>",
   "license": "Apache-2.0",
   "repository": {
@@ -31,7 +31,7 @@
     "build"
   ],
   "dependencies": {
-    "@appium/base-plugin": "^1.7.1",
+    "@appium/base-plugin": "^1.7.2",
     "lodash": "^4.17.20"
   },
   "scripts": {
