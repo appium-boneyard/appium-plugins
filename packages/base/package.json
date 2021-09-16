@@ -29,14 +29,14 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@appium/support": "^2.48.0"
+    "@appium/support": "2.54.2"
   },
   "scripts": {
     "test:unit": "mocha ./build/test/unit/*-specs.js"
   },
   "gitHead": "802f7ad1b2d313a0d445dcd97f9666de478913da",
   "devDependencies": {
-    "@appium/base-driver": "^8.1.1",
-    "@types/express": "^4.17.13"
+    "@appium/base-driver": "8.1.1",
+    "@types/express": "4.17.13"
   }
 }

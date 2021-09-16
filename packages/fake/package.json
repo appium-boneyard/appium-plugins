@@ -36,9 +36,9 @@
   ],
   "dependencies": {
     "@appium/base-plugin": "^1.7.2",
-    "@appium/support": "2.x",
-    "bluebird": "^3.7.2",
-    "lodash": "^4.17.11"
+    "@appium/support": "2.54.0",
+    "bluebird": "3.7.2",
+    "lodash": "4.17.21"
   },
   "scripts": {
     "test:unit": "mocha ./build/test/unit/*-specs.js"
