@@ -67,3 +67,5 @@ export default class FakePlugin extends BasePlugin {
     return null;
   }
 }
+
+export { FakePlugin };
