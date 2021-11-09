@@ -27,9 +27,6 @@ jobs:
       - name: Install
         run: npm install
       
-      - name: Package Bootstrap
-        run: npm run bootstrap
-
       - name: Transpile
         run: npm run build
 

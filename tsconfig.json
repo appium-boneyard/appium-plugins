@@ -1,10 +1,50 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "inlineSourceMap": true,
-    "moduleResolution": "Node",
-    "module": "CommonJS",
+    "alwaysStrict": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
-    "target": "ES2016"
-  }
+    "incremental": true,
+    "inlineSourceMap": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "paths": {
+      "@appium/*-plugin": [
+        "packages/*/index.js"
+      ]
+    },
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "target": "ES2018",
+    "types": [
+      "node",
+      "webdriverio/async",
+      "mocha"
+    ]
+  },
+  "exclude": [
+    "**/node_modules/**",
+    "**/build/**"
+  ],
+  "files": [],
+  "references": [
+    {
+      "path": "packages/images"
+    },
+    {
+      "path": "packages/base"
+    },
+    {
+      "path": "packages/relaxed-caps"
+    },
+    {
+      "path": "packages/universal-xml"
+    },
+    {
+      "path": "packages/fake"
+    }
+  ]
 }

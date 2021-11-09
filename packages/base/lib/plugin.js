@@ -1,17 +1,21 @@
-import { logger } from '@appium/support';
+import {logger} from '@appium/support';
 
-
+/**
+ * @abstract
+ */
 export default class BasePlugin {
-
-  // plugins can define new methods for the Appium server to map to command names, of the same
-  // format as used in Appium's routes.js, for example, this would be a valid newMethodMap:
-  //
-  // {
-  //   '/session/:sessionId/new_method': {
-  //      GET: {command: 'getNewThing'},
-  //      POST: {command: 'setNewThing', payloadParams: {required: ['someParam']}}
-  //   }
-  // }
+  /**
+   * Plugins can define new methods for the Appium server to map to command names, of the same
+   * format as used in Appium's routes.js, for example, this would be a valid newMethodMap:
+   * @type {Record<string,import('express').IRoute}
+   * @example
+   * {
+   *   '/session/:sessionId/new_method': {
+   *     GET: {command: 'getNewThing'},
+   *     POST: {command: 'setNewThing', payloadParams: {required: ['someParam']}}
+   *   }
+   * }
+   */
   static newMethodMap = {};
 
   constructor (pluginName, opts = {}) {
@@ -22,7 +26,6 @@ export default class BasePlugin {
     this.opts = opts;
   }
 
-
   /**
    * Override to return a validator object used to validate CLI args passed into appium as
    * --plugin-args='{"yourPluginName": {"argName": argVal, ...}}'
@@ -30,7 +33,6 @@ export default class BasePlugin {
   static get argsConstraints () {
     return {};
   }
-
 
   /**
    * Optionally updates an Appium express app and http server, by calling methods that may mutate
@@ -41,11 +43,13 @@ export default class BasePlugin {
    * In order to add a new route to Appium with this plugin. Or, you could add new listeners to the
    * httpServer object.
    *
-   * @param {object} expressApp - the Express 'app' object used by Appium for route handling
-   * @param {http.Server} httpServer - the node HTTP server that hosts the app
+   * @param {import('express').Application} expressApp - the Express 'app' object used by Appium for route handling
+   * @param {import('http').Server} httpServer - the node HTTP server that hosts the app
    */
-  /*static async updateServer (expressApp, httpServer) {
-  }*/
+  // eslint-disable-next-line no-unused-vars, require-await
+  static async updateServer (expressApp, httpServer) {
+    // throw new TypeError('Not yet implemented!');
+  }
 
   /**
    * Handle an Appium command, optionally running and using or throwing away the value of the
@@ -73,9 +77,33 @@ export default class BasePlugin {
 
   /**
    * You could also handle all commands generically by implementing 'handle'
+   *
+   * @param {() => Promise<void>} next - A reference to an async function which
+   * encapsulates what would normally happen if this plugin were not handling a
+   * command.
+   * @param {BaseDriver} driver - the instance of the Appium driver currently
+   * handling commands
+   * @param {string} cmdName - the name of the command being handled
+   * @param {...object} args - the args that would be applied to the command
+   * @returns {Promise<any>}
    */
-  /*async handle (next, driver, cmdName, ...args) {
-     return await next();
-  }*/
+  // eslint-disable-next-line no-unused-vars
+  async handle (next, driver, cmdName, ...args) {
+    return await next();
+  }
 
+  /**
+   * @param {method} string
+   * @param {route} string
+   * @param {any} body
+   * @returns {boolean}
+   */
+  // eslint-disable-next-line no-unused-vars
+  shouldAvoidProxy (method, route, body) {
+    throw new TypeError('Not yet implemented!');
+  }
 }
+
+/**
+ * @typedef {import('@appium/base-driver').BaseDriver} BaseDriver
+ */

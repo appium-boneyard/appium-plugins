@@ -1,16 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./build",
-    "sourceRoot": "."
+    "allowJs": true,
+    "composite": true,
+    "outDir": "build"
   },
+  "extends": "../../tsconfig.json",
   "include": [
     "./index.js",
-    "./lib/**/*",
-    "./test/**/*"
-  ],
-  "exclude": [
-    "build",
-    "node_modules"
+    "./lib/**/*.js",
+    "./test/**/*.js"
   ]
 }

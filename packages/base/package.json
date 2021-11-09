@@ -19,14 +19,12 @@
     "npm": ">=6"
   },
   "main": "./build/index.js",
-  "types": "./index.d.ts",
   "directories": {
     "lib": "./lib"
   },
   "files": [
     "lib",
-    "build",
-    "index.d.ts"
+    "build"
   ],
   "dependencies": {
     "@appium/support": "2.55.0"
