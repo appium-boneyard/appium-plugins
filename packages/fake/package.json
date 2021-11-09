@@ -24,6 +24,22 @@
     "scripts": {
       "fake-error": "./build/lib/scripts/fake-error.js",
       "fake-success": "./build/lib/scripts/fake-success.js"
+    },
+    "schema": {
+      "$schema": "http://json-schema.org/draft-07/schema",
+      "additionalProperties": false,
+      "description": "Appium configuration schema for the Fake plugin.",
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "silly-web-server-port": {
+          "appiumCliDest": "sillyWebServerPort",
+          "type": "integer"
+        }
+      },
+      "title": "Fake Plugin Configuration",
+      "type": "object"
     }
   },
   "main": "./build/index.js",

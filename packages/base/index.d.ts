@@ -4,7 +4,6 @@ import type { BaseDriver } from '@appium/base-driver';
 
 export default class BasePlugin {
     static newMethodMap: {};
-    static get argsConstraints(): {};
     constructor(pluginName: string, opts?: {});
     name: string;
     logger: any;
