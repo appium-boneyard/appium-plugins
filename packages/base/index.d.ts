@@ -18,8 +18,6 @@ export default class BasePlugin {
         cmdName: string,
         ...args: any[]
     ): Promise<any>;
-
-    shouldAvoidProxy(method: string, route: string, body: any): boolean;
 }
 
 export { BaseDriver };
