@@ -35,12 +35,20 @@ export default class FakePlugin extends BasePlugin {
     },
   };
 
+  static _unexpectedData = null;
+
   static fakeRoute (req, res) {
     res.send(JSON.stringify({fake: 'fakeResponse'}));
   }
 
+  static unexpectedData (req, res) {
+    res.send(JSON.stringify(FakePlugin._unexpectedData));
+    FakePlugin._unexpectedData = null;
+  }
+
   static async updateServer (expressApp/*, httpServer*/) { // eslint-disable-line require-await
     expressApp.all('/fake', FakePlugin.fakeRoute);
+    expressApp.all('/unexpected', FakePlugin.unexpectedData);
   }
 
   async getPageSource (next, driver, ...args) {
@@ -70,6 +78,10 @@ export default class FakePlugin extends BasePlugin {
   async getWindowHandle (next) {
     const handle = await next();
     return `<<${handle}>>`;
+  }
+
+  onUnexpectedShutdown (driver, cause) {
+    FakePlugin._unexpectedData = `Session ended because ${cause}`;
   }
 }
 
