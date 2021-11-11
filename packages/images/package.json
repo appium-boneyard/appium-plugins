@@ -1,6 +1,6 @@
 {
   "name": "@appium/images-plugin",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Plugin for working with images and image elements in Appium",
   "main": "./build/index.js",
   "repository": {
@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "@appium/base-driver": "8.1.2",
-    "@appium/base-plugin": "^1.7.2",
+    "@appium/base-plugin": "^1.8.0",
     "@appium/support": "2.55.0",
     "lru-cache": "6.0.0"
   },
