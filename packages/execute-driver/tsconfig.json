@@ -1,7 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "build"
+    "outDir": "build",
+    "types": [
+      "node",
+      "mocha",
+      "webdriverio/async"
+    ]
   },
   "include": [
     "./index.js",

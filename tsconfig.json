@@ -1,10 +1,41 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "inlineSourceMap": true,
-    "moduleResolution": "Node",
-    "module": "CommonJS",
+    "declaration": false,
     "esModuleInterop": true,
-    "target": "ES2016"
-  }
+    "incremental": true,
+    "inlineSourceMap": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ES2018",
+    "types": [
+      "node",
+      "mocha"
+    ]
+  },
+  "exclude": [
+    "**/node_modules/**",
+    "**/build/**"
+  ],
+  "files": [],
+  "references": [
+    {
+      "path": "packages/images"
+    },
+    {
+      "path": "packages/base"
+    },
+    {
+      "path": "packages/relaxed-caps"
+    },
+    {
+      "path": "packages/universal-xml"
+    },
+    {
+      "path": "packages/fake"
+    },
+    {
+      "path": "packages/execute-driver"
+    }
+  ]
 }
