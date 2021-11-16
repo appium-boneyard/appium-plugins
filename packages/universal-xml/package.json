@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/appium/appium-plugins#readme",
   "dependencies": {
-    "@appium/base-driver": "8.1.2",
+    "@appium/base-driver": "8.2.0",
     "@appium/base-plugin": "^1.8.0",
     "fast-xml-parser": "3.21.1",
     "xmldom": "0.6.0",
