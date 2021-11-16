@@ -1,0 +1,43 @@
+{
+  "name": "@appium/execute-driver-plugin",
+  "version": "1.0.0",
+  "description": "Plugin for batching and executing driver commands with Appiums",
+  "main": "./build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appium/appium-plugins.git"
+  },
+  "appium": {
+    "pluginName": "execute-driver",
+    "mainClass": "ExecuteDriverPlugin"
+  },
+  "keywords": [
+    "appium",
+    "automation",
+    "webdriver"
+  ],
+  "author": "Appium <maintainers@appium.io>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/appium/appium-plugins/issues"
+  },
+  "homepage": "https://github.com/appium/appium-plugins#readme",
+  "files": [
+    "build",
+    "docs",
+    "lib",
+    "index.js"
+  ],
+  "dependencies": {
+    "@appium/base-plugin": "^1.8.0",
+    "@appium/support": "2.55.1",
+    "bluebird": "3.7.2",
+    "lodash": "4.17.21",
+    "vm2": "^3.9.5",
+    "webdriverio": "7.16.8"
+  },
+  "scripts": {
+    "test:unit": "mocha \"./build/test/unit/*-specs.js\"",
+    "test:e2e": "mocha -t 160s \"./build/test/e2e/*-specs.js\""
+  }
+}
