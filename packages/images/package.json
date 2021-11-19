@@ -33,7 +33,7 @@
   "dependencies": {
     "@appium/base-driver": "8.2.0",
     "@appium/base-plugin": "^1.8.0",
-    "@appium/support": "2.55.1",
+    "@appium/support": "2.55.2",
     "lru-cache": "6.0.0"
   },
   "scripts": {
