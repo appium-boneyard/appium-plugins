@@ -1,6 +1,6 @@
 let hasOpenCV = false;
 try {
-  require('opencv4nodejs');
+  require('@u4/opencv4nodejs');
   hasOpenCV = true;
 } catch (ign) {}
 
