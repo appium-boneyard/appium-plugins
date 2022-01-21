@@ -11,9 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      OPENCV4NODEJS_AUTOBUILD_OPENCV_VERSION: 3.4.16
-      OPENCV_BUILD_ROOT: ~/opencv
     steps:
       - name: Node Setup
         uses: actions/setup-node@v2.5.0
@@ -37,10 +34,6 @@ jobs:
 
       - name: Lint
         run: npm run test:lint
-
-        # don't waste 20 minutes installing opencv if we don't get past lint
-      - name: E2E Install
-        run: npm install @u4/opencv4nodejs && npx build-opencv install build
 
       - name: Unit Tests
         run: npm run test:unit

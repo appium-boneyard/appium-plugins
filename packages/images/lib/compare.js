@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { errors } from '@appium/base-driver';
-import { imageUtil } from '@appium/support';
+import { getImagesMatches, getImagesSimilarity, getImageOccurrence } from '@appium/opencv';
 
 const MATCH_FEATURES_MODE = 'matchFeatures';
 const GET_SIMILARITY_MODE = 'getSimilarity';
@@ -35,14 +35,19 @@ async function compareImages (mode, firstImage, secondImage, options = {}) {
   let result = null;
   switch (_.toLower(mode)) {
     case MATCH_FEATURES_MODE.toLowerCase():
-      result = await imageUtil.getImagesMatches(img1, img2, options);
+      try {
+        result = await getImagesMatches(img1, img2, options);
+      } catch (err) {
+        // might throw if no matches
+        result = {count: 0};
+      }
       break;
     case GET_SIMILARITY_MODE.toLowerCase():
-      result = await imageUtil.getImagesSimilarity(img1, img2, options);
+      result = await getImagesSimilarity(img1, img2, options);
       break;
     case MATCH_TEMPLATE_MODE.toLowerCase():
       // firstImage/img1 is the full image and secondImage/img2 is the partial one
-      result = await imageUtil.getImageOccurrence(img1, img2, options);
+      result = await getImageOccurrence(img1, img2, options);
       if (options.multiple) {
         return result.multiple.map(convertVisualizationToBase64);
       }
