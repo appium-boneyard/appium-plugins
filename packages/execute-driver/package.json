@@ -33,7 +33,7 @@
     "@appium/support": "2.55.1",
     "bluebird": "3.7.2",
     "lodash": "4.17.21",
-    "vm2": "^3.9.5",
+    "vm2": "3.9.5",
     "webdriverio": "7.16.8"
   },
   "scripts": {
