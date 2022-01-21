@@ -9,9 +9,6 @@ This is an official Appium plugin designed to facilitate image comparison, visua
 
 ## Prerequisites
 
-* [OpenCV](https://opencv.org) 3.x native libraries
-* [opencv4nodejs](https://github.com/justadudewhohacks/opencv4nodejs) NPM module: install with `npm i -g opencv4nodejs`. By default the preinstall script of this module also downloads and makes all the required OpenCV libs from source, but this requires developer tools to be available on the host system.
-* NOTE: The [@u4/opencv4nodejs](https://github.com/UrielCh/opencv4nodejs) fork of opencv4nodejs seems to be more maintained and functional for most users.
 * Appium Server 2.0+
 
 ## Installation - Server

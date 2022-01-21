@@ -1,9 +1,3 @@
-let hasOpenCV = false;
-try {
-  require('@u4/opencv4nodejs');
-  hasOpenCV = true;
-} catch (ign) {}
-
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ImageElementPlugin, { IMAGE_STRATEGY } from '../../index';
@@ -15,9 +9,7 @@ import { TEST_IMG_1_B64, TEST_IMG_2_B64, TEST_IMG_2_PART_B64 } from '../fixtures
 chai.use(chaiAsPromised);
 chai.should();
 
-const describeOrSkip = hasOpenCV ? describe : describe.skip;
-
-describeOrSkip('ImageElementPlugin#handle', function () {
+describe('ImageElementPlugin#handle', function () {
   const next = () => {};
   const driver = new BaseDriver();
   const p = new ImageElementPlugin();
