@@ -42,5 +42,5 @@
     "test:e2e": "mocha -t 160s \"./build/test/e2e/*-specs.js\"",
     "copyfiles": "copyfiles \"./test/fixtures/*.png\" ./build"
   },
-  "gitHead": "6bada81cddda35d888a883396fef1843608c271b"
+  "gitHead": "5efbd2840a4e5dd078a4646c026472a006ab2211"
 }

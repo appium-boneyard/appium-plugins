@@ -33,5 +33,6 @@
   "scripts": {
     "test:unit": "mocha \"./build/test/unit/*-specs.js\"",
     "copyfiles": "copyfiles \"./test/fixtures/*.xml\" ./build"
-  }
+  },
+  "gitHead": "5efbd2840a4e5dd078a4646c026472a006ab2211"
 }
