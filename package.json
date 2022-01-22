@@ -27,7 +27,7 @@
     "teen_process": "1.16.0",
     "ts-node": "10.4.0",
     "typescript": "4.5.5",
-    "webdriverio": "7.16.10"
+    "webdriverio": "7.16.13"
   },
   "scripts": {
     "clean": "run-s \"clean:*\" && npm install && npm run build",

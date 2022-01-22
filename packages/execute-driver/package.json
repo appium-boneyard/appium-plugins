@@ -34,7 +34,7 @@
     "bluebird": "3.7.2",
     "lodash": "4.17.21",
     "vm2": "3.9.5",
-    "webdriverio": "7.16.8"
+    "webdriverio": "7.16.13"
   },
   "scripts": {
     "test:unit": "mocha \"./build/test/unit/*-specs.js\"",
