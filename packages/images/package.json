@@ -34,7 +34,7 @@
     "@appium/base-driver": "8.2.1",
     "@appium/base-plugin": "^1.8.1",
     "@appium/opencv": "1.0.1",
-    "@appium/support": "2.55.3",
+    "@appium/support": "2.55.4",
     "lru-cache": "6.0.0"
   },
   "scripts": {
