@@ -1,6 +1,6 @@
 {
   "name": "@appium/execute-driver-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plugin for batching and executing driver commands with Appiums",
   "main": "./build/index.js",
   "repository": {
@@ -29,7 +29,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@appium/base-plugin": "^1.8.0",
+    "@appium/base-plugin": "^1.8.1",
     "@appium/support": "2.55.1",
     "bluebird": "3.7.2",
     "lodash": "4.17.21",
