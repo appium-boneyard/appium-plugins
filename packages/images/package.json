@@ -31,7 +31,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@appium/base-driver": "8.2.1",
+    "@appium/base-driver": "8.3.1",
     "@appium/base-plugin": "^1.8.1",
     "@appium/opencv": "1.0.1",
     "@appium/support": "2.55.4",
