@@ -36,7 +36,7 @@
   },
   "gitHead": "5efbd2840a4e5dd078a4646c026472a006ab2211",
   "devDependencies": {
-    "@appium/base-driver": "8.2.1",
+    "@appium/base-driver": "8.3.1",
     "@types/express": "4.17.13"
   }
 }
