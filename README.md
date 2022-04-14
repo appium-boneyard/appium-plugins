@@ -1,3 +1,10 @@
+# THIS PROJECT IS ARCHIVED. ALL PACKAGES IN THIS REPO HAVE MOVED INTO [THE MAIN APPIUM REPO at https://github.com/appium/appium](https://github.com/appium/appium)
+
+> Note:
+> - Package names have not changed, but the directory names all have the `-plugin` suffix. They still live in the `packages/` subdir.
+> - As of this writing (April 14 2022), the packages are not in the `master` branch--they are in the `2.0` branch--but will be in the default branch (`main`) in the near future.
+
+* * *
 # Appium Plugins
 
 This is a monorepo containing code and documentation for Appium plugins maintained by the core Appium team. Plugins are little programs which can be added to an Appium installation and activated, for the purpose of extending or modifying the behavior of pretty much any aspect of Appium. Plugins are available with Appium as of Appium 2.0.
