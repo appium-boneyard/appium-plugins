@@ -1,3 +1,10 @@
+# THIS PROJECT IS ARCHIVED. ALL PACKAGES IN THIS REPO HAVE MOVED INTO [THE MAIN APPIUM REPO at https://github.com/appium/appium](https://github.com/appium/appium)
+
+> Note:
+> - Package names have not changed, but the directory names all have the `-plugin` suffix. They still live in the `packages/` subdir.
+> - As of this writing (April 14 2022), the packages are not in the `master` branch--they are in the `2.0` branch--but will be in the default branch (`main`) in the near future.
+
+* * *
 # Appium Execute Driver Script Plugin
 
 One downside of Appium's client-server architecture is that each command must travel across a network with potentially high latency. This is especially the case in situations where the Appium session takes place on a service provider's host machine rather than locally.
