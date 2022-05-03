@@ -2,7 +2,7 @@
   "name": "appium-plugins-monorepo",
   "private": true,
   "devDependencies": {
-    "@appium/eslint-config-appium": "5.0.0",
+    "@appium/eslint-config-appium": "5.0.2",
     "@babel/core": "7.16.0",
     "@babel/eslint-parser": "7.16.3",
     "@babel/plugin-proposal-class-properties": "7.16.0",
